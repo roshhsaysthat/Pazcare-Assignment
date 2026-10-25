@@ -21,7 +21,7 @@ function PaletteBody({ items, onDone }: { items: Cmd[]; onDone: () => void }) {
       <Input
         label="Search channels and commands"
         hideLabel
-        autoFocus
+        data-autofocus
         placeholder="Jump to a channel or run a command"
         value={q}
         role="combobox"

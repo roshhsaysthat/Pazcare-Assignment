@@ -8,3 +8,4 @@
 .shell__compare p + p { margin-top: var(--ds-space-2); }
 @media (max-width: 899px) { .shell__idea { display: none; } .shell__bar { justify-content: space-between; } }
 @media (max-width: 639px) { .shell__bar { padding: 0 var(--ds-space-2); } .shell__bar .ds-btn { padding: 0 var(--ds-space-3); } }
+.shell__letter { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; font-size: 11px; font-weight: 600; background: color-mix(in srgb, currentColor 14%, transparent); }

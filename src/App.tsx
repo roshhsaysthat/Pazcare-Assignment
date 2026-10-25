@@ -27,7 +27,7 @@ export default function App() {
           variant="pill"
           current={id}
           onSelect={(n) => { location.hash = `/${n}`; }}
-          items={concepts.map((c) => ({ id: c.id, label: `${c.letter}. ${c.name}` }))}
+          items={concepts.map((c) => ({ id: c.id, label: c.name, icon: <span className="shell__letter" aria-hidden="true">{c.letter}</span> }))}
         />
         <p className="shell__idea"><strong>{current.reference}</strong> {current.idea}</p>
         {current.preferred && <Tag tone="success" dot>Preferred</Tag>}
