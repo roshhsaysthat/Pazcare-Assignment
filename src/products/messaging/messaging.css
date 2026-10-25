@@ -41,3 +41,10 @@
 
 /* Concept chooser shared across the demo shell */
 .shell-switch { position: fixed; z-index: 50; left: 50%; bottom: 16px; transform: translateX(-50%); max-width: calc(100vw - 24px); }
+
+/* Thread panel */
+.thread { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+.thread__scroll { flex: 1; overflow: auto; padding: var(--ds-space-3) var(--ds-space-2); }
+.thread__divider { display: flex; align-items: center; gap: var(--ds-space-3); margin: var(--ds-space-3) var(--ds-space-3); color: var(--ds-text-muted); font-size: var(--ds-text-caption); }
+.thread__divider::before, .thread__divider::after { content: ''; flex: 1; height: 1px; background: var(--ds-border); }
+.thread__compose { padding: var(--ds-space-3) var(--ds-space-4) var(--ds-space-4); }
