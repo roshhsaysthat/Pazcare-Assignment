@@ -26,11 +26,11 @@ export function useWorkspace(initialChannel = 'automation') {
     setMessages((m) => ({ ...m, [channelId]: [...(m[channelId] ?? []), mk(text, files)] }));
   }, [channelId]);
 
-  const reply = useCallback((rootId: string, text: string, files?: string[]) => {
+  const reply = useCallback((rootId: string, text: string, files?: string[], inChannel: string = channelId) => {
     setThreads((ts) => {
       const exists = ts.some((t) => t.rootId === rootId);
       if (exists) return ts.map((t) => (t.rootId === rootId ? { ...t, replies: [...t.replies, mk(text, files)] } : t));
-      return [...ts, { rootId, channelId, replies: [mk(text, files)] }];
+      return [...ts, { rootId, channelId: inChannel, replies: [mk(text, files)] }];
     });
   }, [channelId]);
 

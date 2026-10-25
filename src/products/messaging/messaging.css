@@ -1,5 +1,5 @@
 /* Shared message + composer styles. Tokens only. */
-.msg { display: grid; grid-template-columns: 36px 1fr; gap: var(--ds-space-3); padding: var(--ds-space-2) var(--ds-space-3); border-radius: var(--ds-radius-md); }
+.msg { display: grid; grid-template-columns: var(--msg-avatar, 36px) 1fr; gap: var(--ds-space-3); padding: var(--ds-space-2) var(--ds-space-3); border-radius: var(--ds-radius-md); }
 .msg:hover { background: color-mix(in srgb, var(--ds-text) 4%, transparent); }
 .msg--grouped { padding-top: 0; }
 .msg__head { display: flex; align-items: center; gap: var(--ds-space-2); flex-wrap: wrap; }

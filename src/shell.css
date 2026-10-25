@@ -1,0 +1,10 @@
+/* Demo shell: concept switcher bar. Not part of the products. */
+:root { --shell-h: 64px; }
+.shell__bar { position: sticky; top: 0; z-index: 30; height: var(--shell-h); display: flex; align-items: center; gap: var(--ds-space-3); padding: 0 var(--ds-space-4); background: var(--ds-bg); border-bottom: 1px solid var(--ds-border); }
+.shell__idea { flex: 1; min-width: 0; color: var(--ds-text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.shell__idea strong { color: var(--ds-text); font-weight: 500; }
+.shell__compare { list-style: none; margin: 0; padding: var(--ds-space-5); display: grid; gap: var(--ds-space-6); }
+.shell__compare h3 { font-size: var(--ds-text-title); display: flex; align-items: center; gap: var(--ds-space-2); flex-wrap: wrap; margin-bottom: var(--ds-space-2); }
+.shell__compare p + p { margin-top: var(--ds-space-2); }
+@media (max-width: 899px) { .shell__idea { display: none; } .shell__bar { justify-content: space-between; } }
+@media (max-width: 639px) { .shell__bar { padding: 0 var(--ds-space-2); } .shell__bar .ds-btn { padding: 0 var(--ds-space-3); } }

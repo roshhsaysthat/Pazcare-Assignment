@@ -1,0 +1,59 @@
+/* Concept C: Rooms. Mobile-first. Unified inbox on the left, live-first room on the right. */
+.rooms { min-height: calc(100dvh - var(--shell-h, 0px)); display: grid; grid-template-columns: minmax(0, 1fr); background: var(--ds-bg); }
+@media (min-width: 900px) { .rooms { grid-template-columns: minmax(380px, 440px) minmax(0, 1fr); } .rooms__back { display: none; } }
+@media (max-width: 899px) { .rooms[data-view='inbox'] .rooms__room { display: none; } .rooms[data-view='room'] .rooms__inbox { display: none; } }
+
+.rooms__inbox { padding: var(--ds-space-5) var(--ds-space-4) var(--ds-space-24); display: grid; gap: var(--ds-space-6); align-content: start; border-right: 1px solid var(--ds-border); }
+@media (min-width: 900px) { .rooms__inbox { height: calc(100dvh - var(--shell-h, 0px)); overflow: auto; } }
+.rooms__intro h1 { font-size: var(--ds-text-h1); padding-top: var(--ds-space-4); }
+.rooms__label { font-size: var(--ds-text-body); font-family: var(--ds-font-body); letter-spacing: 0; font-weight: 500; color: var(--ds-text-muted); display: flex; align-items: center; gap: var(--ds-space-2); margin-bottom: var(--ds-space-2); }
+.rooms__pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--ds-danger); animation: rooms-pulse 1.6s var(--ds-ease) infinite; }
+@keyframes rooms-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+.rooms__live-list { list-style: none; margin: 0; padding: 0 0 var(--ds-space-2); display: flex; gap: var(--ds-space-3); overflow-x: auto; scroll-snap-type: x proximity; }
+.rooms__live-list > li { flex: 0 0 min(280px, 80%); scroll-snap-align: start; }
+.rooms__live-card { display: grid; gap: var(--ds-space-3); height: 100%; align-content: space-between; }
+.rooms__live-meta { font-size: var(--ds-text-caption); }
+.rooms__live-title { font-family: var(--ds-font-display); font-weight: 500; letter-spacing: var(--ds-tracking-display); font-size: var(--ds-text-h2); line-height: 1.05; }
+.rooms__stack { display: flex; align-items: center; font-size: var(--ds-text-caption); }
+.rooms__stack > span:last-child { margin-left: var(--ds-space-3); }
+.rooms__stack > .ds-avatar + .ds-avatar { margin-left: -8px; }
+.rooms__live-card .ds-btn { justify-self: start; }
+
+.rooms__feed-head { display: flex; align-items: center; justify-content: space-between; gap: var(--ds-space-3); flex-wrap: wrap; margin-bottom: var(--ds-space-2); }
+.rooms__feed-head .rooms__label { margin: 0; }
+.rooms__chips { display: flex; gap: var(--ds-space-2); flex-wrap: wrap; }
+.rooms__undo { border: 0; background: transparent; font-weight: 500; text-decoration: underline; cursor: pointer; padding: 0 var(--ds-space-1); min-height: 24px; }
+.rooms__items { list-style: none; margin: var(--ds-space-3) 0 0; padding: 0; display: grid; gap: var(--ds-space-3); }
+.rooms__item { background: var(--ds-surface); border-radius: var(--ds-radius-lg); box-shadow: var(--ds-elev-2); padding: var(--ds-space-3); display: grid; gap: var(--ds-space-1); }
+.rooms__open { display: flex; gap: var(--ds-space-3); align-items: flex-start; border: 0; background: transparent; text-align: left; cursor: pointer; padding: var(--ds-space-1); border-radius: var(--ds-radius-md); width: 100%; }
+.rooms__open:hover { background: var(--ds-surface-sunken); }
+.rooms__chip { display: grid; place-items: center; width: 32px; height: 32px; border-radius: var(--ds-radius-sm); color: var(--ds-tint-ink); flex: none; }
+.rooms__item-body { display: grid; gap: 2px; min-width: 0; flex: 1; }
+.rooms__item-top { display: flex; align-items: center; gap: var(--ds-space-2); flex-wrap: wrap; }
+.rooms__item-top time { margin-left: auto; font-size: var(--ds-text-caption); }
+.rooms__preview { display: flex; gap: var(--ds-space-2); align-items: flex-start; color: var(--ds-text-muted); }
+.rooms__preview > span:last-child { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.rooms__item-actions { display: flex; gap: var(--ds-space-1); padding-left: var(--ds-space-10); }
+.rooms__inline { padding: var(--ds-space-2) 0 var(--ds-space-1); }
+.rooms__empty { display: flex; align-items: center; gap: var(--ds-space-3); margin-top: var(--ds-space-3); }
+
+.rooms__all .ds-list { background: var(--ds-surface); border-radius: var(--ds-radius-lg); box-shadow: var(--ds-elev-2); overflow: hidden; }
+
+.rooms__room { display: flex; flex-direction: column; min-width: 0; height: calc(100dvh - var(--shell-h, 0px)); }
+.rooms__room-head { display: flex; align-items: center; gap: var(--ds-space-3); padding: var(--ds-space-4); }
+.rooms__room-head h2 { font-size: var(--ds-text-h2); }
+.rooms__stage { margin: 0 var(--ds-space-4); display: grid; gap: var(--ds-space-4); }
+.rooms__stage-top { display: flex; align-items: center; gap: var(--ds-space-3); flex-wrap: wrap; }
+.rooms__stage-top > span:last-child { margin-left: auto; font-size: var(--ds-text-caption); }
+.rooms__speakers { list-style: none; margin: 0; padding: 0; display: flex; gap: var(--ds-space-5); flex-wrap: wrap; }
+.rooms__speakers li { display: grid; justify-items: center; gap: var(--ds-space-1); font-weight: 500; }
+.rooms__ring { display: inline-grid; padding: 4px; border-radius: 50%; }
+.rooms__speakers li[data-speaking='true'] .rooms__ring { animation: rooms-ring 1.4s var(--ds-ease) infinite; }
+@keyframes rooms-ring { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--ds-text) 35%, transparent); } 100% { box-shadow: 0 0 0 14px transparent; } }
+@media (prefers-reduced-motion: reduce) { .rooms__speakers li[data-speaking='true'] .rooms__ring { animation: none; box-shadow: 0 0 0 2px var(--ds-text); } .rooms__pulse { animation: none; } }
+.rooms__controls { display: flex; gap: var(--ds-space-2); flex-wrap: wrap; }
+.rooms__stage .ds-btn--secondary { background: var(--ds-surface); border-color: transparent; }
+.rooms__quiet { display: grid; gap: var(--ds-space-2); justify-items: start; }
+.rooms__chat { flex: 1; min-height: 0; overflow: auto; padding: var(--ds-space-3) var(--ds-space-2); margin-top: var(--ds-space-2); }
+.rooms__compose { padding: var(--ds-space-2) var(--ds-space-4) var(--ds-space-4); }

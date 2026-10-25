@@ -17,7 +17,7 @@ type Props = {
 export function MessageItem({ msg, replyCount = 0, lastReply, onOpenThread, avatarSize = 36, grouped, threadActive }: Props) {
   const p = personById(msg.author);
   return (
-    <article className={`msg${grouped ? ' msg--grouped' : ''}`} aria-label={`${p.name} at ${msg.time}`}>
+    <article className={`msg${grouped ? ' msg--grouped' : ''}`} aria-label={`${p.name} at ${msg.time}`} style={{ ['--msg-avatar' as string]: `${avatarSize}px` }}>
       <div className="msg__avatar">
         {grouped ? <span className="ds-sr-only">{p.name}</span> : <Avatar name={p.name} size={avatarSize} shape={p.bot ? 'square' : 'circle'} status={p.bot ? undefined : p.status} />}
       </div>
