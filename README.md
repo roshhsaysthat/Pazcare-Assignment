@@ -38,6 +38,7 @@ Needs Node 18+. No backend: all state is local React state and resets on reload.
 
 ```
 src/design-system/        tokens.css, components.css, 10 components (Button, Input, Card, Tag, Nav, List, Sheet, Avatar, Banner, Meter)
+products/                  index of the six layouts, each with its one-line idea (code is in src/products/)
 src/products/messaging/   Meetify, Canvas, Rooms + shared composer, message, thread, workspace state
 src/products/reader/      Now, Year, Shelves + shared data, derived stats, cover and rating components, Explore sheet
 experiments/clinic-booking/  parked skill-test product (README explains the flow and how to restore it)
