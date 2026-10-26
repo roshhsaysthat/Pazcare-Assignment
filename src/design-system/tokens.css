@@ -1,13 +1,14 @@
 /*
   Roshyoui design tokens.
-  Observed from portfolio screenshots: off-white canvas, ink black, pastel tints, pill shapes, two-tone headings.
-  Inferred (not verified against live site): font families, Phosphor icons, all motion values, the dark theme.
+  Observed from the two portfolio screenshots (see docs/provenance.md): #fafafa canvas, #000 ink, pastel card tints,
+  pill labels, two-tone headings, hairline dividers.
+  Inferred, NOT verified: font families, Phosphor icons, all motion values, the dark theme.
 */
 :root {
   --ds-bg: #fafafa;
   --ds-surface: #fff;
   --ds-surface-sunken: #f3f3f3;
-  --ds-text: #0a0a0a;
+  --ds-text: #000; /* measured from screenshots: footer and headings are #000000 */
   --ds-text-muted: #5c5c5c;
   --ds-text-soft: #8a8a8a; /* 24px+ text only */
   --ds-border: #e6e6e6;
@@ -26,12 +27,12 @@
   --ds-tint-peach: #f9bfa3;
   --ds-tint-butter: #f8d56e;
   --ds-tint-lilac: #c3b4f2;
-  --ds-tint-ink: #0a0a0a;
+  --ds-tint-ink: #000;
 
   /* Role tokens: primary buttons and inverse cards flip in dark theme */
   --ds-primary-bg: var(--ds-text);
   --ds-primary-fg: var(--ds-surface);
-  --ds-scrim: rgb(10 10 10 / 0.4);
+  --ds-scrim: rgb(0 0 0 / 0.4);
   --ds-focus-ring: 0 0 0 2px var(--ds-surface), 0 0 0 4px var(--ds-text);
 
   --ds-font-display: 'Inter Tight Variable', 'Inter Tight', 'Inter', system-ui, sans-serif;
