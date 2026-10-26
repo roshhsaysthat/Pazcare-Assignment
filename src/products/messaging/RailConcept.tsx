@@ -221,11 +221,13 @@ export default function RailConcept() {
     <ThreadPanel root={root} replies={threadFor(root.id)?.replies ?? []} onReply={(t, f) => reply(root.id, t, f)} />
   ) : null;
 
+  // In a DM the right pane stays closed until a thread or the person's profile is opened.
+  const showRight = wide && (!person || !!openRoot || profileOpen);
   const rightTitle = openRoot ? 'Thread' : person ? 'Profile' : 'Members';
   const rightBody = openRoot ? threadView : person ? profile : members;
 
   return (
-    <div className="rail" data-ds-theme={theme} data-wide={wide} data-mid={mid}>
+    <div className="rail" data-ds-theme={theme} data-wide={showRight} data-mid={mid}>
       {mid && <aside className="rail__channels" aria-label="Channels">{channelPane}</aside>}
 
       <main className="rail__main">
@@ -234,7 +236,7 @@ export default function RailConcept() {
           <div className="rail__title">
             {person ? (
               <h1>
-                <button type="button" className="rail__who" aria-pressed={profileOpen || !openRoot} onClick={() => { openThread(null); setProfileOpen(true); }}>
+                <button type="button" className="rail__who" aria-pressed={profileOpen && !openRoot} onClick={() => { const wasThread = !!openRoot; openThread(null); setProfileOpen((o) => wasThread || !o); }}>
                   <PersonAvatar name={person.name} size={40} status={person.status} />
                   <span><span className="rail__who-name">{channel.name}</span><span className="rail__who-role">{person.role}</span></span>
                 </button>
@@ -288,11 +290,11 @@ export default function RailConcept() {
         </div>
       </main>
 
-      {wide && (
+      {showRight && (
         <aside className="rail__right" aria-label={rightTitle}>
           <div className="rail__right-head">
             <h2>{rightTitle}</h2>
-            {openRoot && <Button variant="ghost" size="sm" iconOnly aria-label="Close thread" icon={<X size="1.25em" />} onClick={() => openThread(null)} />}
+            {(openRoot || person) && <Button variant="ghost" size="sm" iconOnly aria-label={openRoot ? 'Close thread' : 'Close profile'} icon={<X size="1.25em" />} onClick={() => (openRoot ? openThread(null) : setProfileOpen(false))} />}
           </div>
           <div className="rail__right-body">{rightBody}</div>
         </aside>
