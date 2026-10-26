@@ -27,6 +27,7 @@ Ladder: 1 compose existing components, 2 style a native element, 3 build a produ
 | Dialog autofocus | `Sheet` focuses `[data-autofocus]` after `showModal()` | 4 | React `autoFocus` fires before a `<dialog>` opens. A system bug found by testing, fixed in the shared component. |
 | Static list row | `ListRow` renders a plain element without `onClick` | 4 | The Year list shipped 14 dead tab stops. Fixed in the shared component. |
 | Count vs score on a meter | `Meter` `display` prop | 4 | A genre meter read "5/5" like a rating. |
+| Disabled filter chip | Dashed, struck-through `FilterTag:disabled`, with "unavailable" in the accessible name | 4 | Needed by the booking slot picker. No product nouns. |
 | Select, month and genre filters | Native `<select>` styled with `ds-input` | 2 | Native behaviour and mobile pickers for free. |
 | Rating input | Native radio group with star icons, inputs visually hidden | 2 to 3 | Arrow keys and screen readers work for free. |
 | Book cover | Generated typographic cover on a tint (`Cover`) | 3 | No real cover art. Product noun, so it stays out of the system. |

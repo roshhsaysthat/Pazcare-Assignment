@@ -16,6 +16,7 @@ Run what you can, report what you ran, and say what you did not.
 - [ ] Tap targets 44px+ on touch. Status never by colour alone.
 - [ ] `--ds-text-soft` only on 24px+ text.
 - [ ] No row or card is a button unless it does something.
+- [ ] Multi-step flow: focus moves to the new step heading on each change (not on first render). Errors appear on submit, not on first keystroke.
 - [ ] Automated scan: axe-core with `wcag2a` and `wcag2aa`. Also scan with a sheet open.
 
 ## Responsive

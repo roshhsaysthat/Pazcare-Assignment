@@ -87,6 +87,7 @@ textarea.ds-input { height: auto; min-height: 80px; padding: var(--ds-space-3); 
 button.ds-tag { cursor: pointer; height: 32px; padding: 0 var(--ds-space-3); border-color: var(--ds-border); background: var(--ds-surface); }
 button.ds-tag:hover { border-color: var(--ds-border-strong); }
 button.ds-tag[aria-pressed='true'], button.ds-tag[aria-selected='true'] { background: var(--ds-primary-bg); color: var(--ds-primary-fg); border-color: var(--ds-primary-bg); }
+button.ds-tag:disabled { cursor: not-allowed; color: var(--ds-text-muted); background: var(--ds-surface-sunken); border-style: dashed; text-decoration: line-through; }
 @media (pointer: coarse) { button.ds-tag { min-height: 44px; } }
 
 /* Avatar */

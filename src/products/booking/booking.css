@@ -1,0 +1,38 @@
+/* Skill test: a stepwise booking flow built from a brief the system had never seen. Tokens only. */
+.bk { padding: var(--ds-space-6) var(--ds-space-4) var(--ds-space-24); }
+.bk__layout { display: grid; gap: var(--ds-space-8); max-width: 960px; margin: 0 auto; }
+@media (min-width: 900px) { .bk { padding-top: var(--ds-space-10); } .bk__layout { grid-template-columns: minmax(0, 1fr) 280px; } }
+.bk__col { display: grid; gap: var(--ds-space-6); align-content: start; max-width: 640px; width: 100%; margin: 0 auto; }
+.bk__head { display: grid; gap: var(--ds-space-3); }
+.bk__title { font-size: var(--ds-text-h1); }
+.bk__lead { color: var(--ds-text-soft); }
+.bk__h2 { font-size: var(--ds-text-h2); margin-bottom: var(--ds-space-4); }
+.bk__h2:focus, .bk__title:focus, .bk__h2:focus-visible, .bk__title:focus-visible { outline: none; box-shadow: none; } /* headings are focus targets for AT, not controls */
+.bk__step { display: block; }
+.bk__services { border: 0; padding: 0; margin: 0; display: grid; gap: var(--ds-space-3); }
+.bk__service { display: flex; align-items: center; gap: var(--ds-space-4); padding: var(--ds-space-4); background: var(--ds-surface); border-radius: var(--ds-radius-lg); box-shadow: var(--ds-elev-1); cursor: pointer; transition: box-shadow var(--ds-dur-fast) var(--ds-ease); }
+.bk__service:hover { box-shadow: var(--ds-elev-2); }
+.bk__service[data-on] { box-shadow: 0 0 0 2px var(--ds-text); }
+.bk__service:has(input:focus-visible) { box-shadow: var(--ds-focus-ring); }
+.bk__chip { display: grid; place-items: center; width: 56px; height: 56px; flex: none; border-radius: var(--ds-radius-md); color: var(--ds-tint-ink); font-family: var(--ds-font-display); font-weight: 500; font-size: var(--ds-text-title); line-height: 1; text-align: center; }
+.bk__chip small { display: block; font-family: var(--ds-font-body); font-size: var(--ds-text-caption); }
+.bk__time { display: grid; gap: var(--ds-space-4); }
+.bk__select { display: grid; gap: var(--ds-space-1); }
+.bk__label { font-weight: 500; font-size: var(--ds-text-caption); color: var(--ds-text-muted); }
+.bk__row { display: flex; gap: var(--ds-space-2); flex-wrap: wrap; }
+.bk__slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(88px, 1fr)); gap: var(--ds-space-2); }
+.bk__slots .ds-tag { justify-content: center; }
+.bk__form { display: grid; gap: var(--ds-space-4); }
+.bk__nav { display: flex; justify-content: space-between; align-items: center; gap: var(--ds-space-3); }
+.bk__summary { margin: 0; display: grid; gap: var(--ds-space-3); }
+.bk__summary dt { font-size: var(--ds-text-caption); color: var(--ds-text-muted); font-weight: 500; }
+.bk__summary dd { margin: 0; font-weight: 500; }
+.bk__notes { margin-top: var(--ds-space-3); }
+.bk__aside { display: none; }
+@media (min-width: 900px) { .bk__aside { display: block; position: sticky; top: calc(var(--shell-h, 0px) + var(--ds-space-6)); align-self: start; } .bk__mobile-summary { display: none; } }
+.bk__aside-h { font-size: var(--ds-text-title); margin-bottom: var(--ds-space-3); }
+.bk__mobile-summary { max-width: 640px; margin: var(--ds-space-6) auto 0; padding: var(--ds-space-3) var(--ds-space-4); background: var(--ds-surface-sunken); border-radius: var(--ds-radius-md); }
+.bk__mobile-summary summary { cursor: pointer; font-weight: 500; min-height: 44px; display: flex; align-items: center; }
+.bk__mobile-summary .bk__summary { padding-bottom: var(--ds-space-2); }
+.bk__done { display: grid; gap: var(--ds-space-4); justify-items: start; margin-top: var(--ds-space-8); }
+.bk__demo { font-size: var(--ds-text-caption); }

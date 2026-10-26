@@ -12,3 +12,5 @@ Each of these shipped in this repo before testing caught it.
 8. **Scaling an SVG chart shrinks its type.** Measure the container and draw at that width so labels stay 12px.
 9. **Do not trust a value you have not measured.** The ink token was `#0a0a0a` until pixel sampling showed `#000000`. Check `docs/provenance.md` before asserting a design fact.
 10. **Test locators can be wrong, not the app.** A failing "sort" test was an alphabetical assertion error. Verify the real behaviour before changing product code.
+11. **Stepwise flows need focus management, and the skill did not say so.** On each step change, move focus to the new step's heading (`tabIndex={-1}`) so keyboard and screen reader users land in the right place. Skip it on first render, or the page grabs focus on load. Remove the focus ring from such headings: they are targets, not controls. Found while testing the skill on the booking brief.
+12. **`FilterTag` had no disabled style.** A slot picker needs "taken" times. Added a dashed, struck-through disabled state to the system rather than overriding it in the product, and the text still says "unavailable" for screen readers.
