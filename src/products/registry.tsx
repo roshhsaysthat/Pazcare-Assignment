@@ -1,4 +1,4 @@
-import { ChatsCircle, BookOpen, CalendarCheck } from '@phosphor-icons/react';
+import { ChatsCircle, BookOpen } from '@phosphor-icons/react';
 import type { ReactNode } from 'react';
 import RailConcept from './messaging/RailConcept';
 import CanvasConcept from './messaging/CanvasConcept';
@@ -8,7 +8,6 @@ import NowConcept from './reader/NowConcept';
 import YearConcept from './reader/YearConcept';
 import ShelvesConcept from './reader/ShelvesConcept';
 import { readerConcepts } from './reader/concepts';
-import BookingFlow from './booking/BookingFlow';
 
 type Meta = { id: string; letter: string; name: string; reference: string; preferred: boolean; idea: string; why: string };
 export type ProductDef = { id: string; name: string; icon: ReactNode; blurb: string; concepts: readonly Meta[]; views: Record<string, () => JSX.Element> };
@@ -23,12 +22,6 @@ export const products: ProductDef[] = [
     id: 'reader', name: 'Reader profile', icon: <BookOpen size="1.25em" aria-hidden="true" />,
     blurb: 'A Goodreads-style profile: current reads, shelves, yearly challenge and reviews.',
     concepts: readerConcepts, views: { now: NowConcept, year: YearConcept, shelves: ShelvesConcept },
-  },
-  {
-    id: 'booking', name: 'Clinic booking', icon: <CalendarCheck size="1.25em" aria-hidden="true" />,
-    blurb: 'Skill test: a stepwise appointment flow from a brief the system had never seen. See docs/validation.md.',
-    concepts: [{ id: 'flow', letter: 'T', name: 'Flow', reference: 'Skill test.', preferred: false, idea: 'One question per step, one primary button, a quiet summary beside it.', why: 'Built only from the skill and the shared components to test whether the system extends to an unfamiliar job.' }],
-    views: { flow: BookingFlow },
   },
 ];
 

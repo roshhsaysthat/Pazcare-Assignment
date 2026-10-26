@@ -10,7 +10,7 @@ SERVER=$!
 trap 'kill $SERVER 2>/dev/null' EXIT
 for _ in $(seq 1 30); do curl -s -o /dev/null "http://localhost:$PORT/" && break; sleep 0.5; done
 status=0
-for t in messaging reader booking; do
+for t in messaging reader; do
   echo "== $t"
   BASE="http://localhost:$PORT" python3 "tests/e2e/$t.py" || status=1
 done

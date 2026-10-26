@@ -11,7 +11,7 @@ npm run build        # type-check + production build
 npm run test:e2e     # builds, serves, runs all browser checks (see Testing)
 ```
 
-Needs Node 18+. No backend: all state is local React state and resets on reload. Open any layout directly: `#/messaging/rail`, `#/reader/now`, `#/booking/flow`. The bar at the top switches product and concept; **Compare** shows each concept's core idea and why it is or is not preferred.
+Needs Node 18+. No backend: all state is local React state and resets on reload. Open any layout directly: `#/messaging/rail`, `#/reader/now`. The bar at the top switches product and concept; **Compare** shows each concept's core idea and why it is or is not preferred.
 
 ## The layouts
 
@@ -23,7 +23,7 @@ Needs Node 18+. No backend: all state is local React state and resets on reload.
 | **B. Reader profile** | **Now** (reading-first) | The book in your hands leads: update your page in two taps, challenge and shelves in a side rail | **Yes** |
 | | **Year** (stats-first) | A stat strip, one chart of progress against the goal, then what you read | |
 | | **Shelves** (collection-first) | The library is the page: cover grid, filters, every book editable in a side sheet | |
-| **Skill test** | **Booking flow** | An appointment flow from an unfamiliar brief, built using only the skill | n/a |
+| **Skill test** (parked) | **Clinic booking flow** | An appointment flow from an unfamiliar brief, built using only the skill. Removed from the app, kept in `experiments/clinic-booking/` | n/a |
 
 **Why Meetify (A).** It is the only messaging concept showing channels, a thread and the composer together at desktop width, and the command menu and shortcuts serve the high-frequency scanning job. It depends on the dark theme, which is inferred (the portfolio has none), so Canvas is the safer on-brand alternative for async teams.
 
@@ -39,8 +39,8 @@ Needs Node 18+. No backend: all state is local React state and resets on reload.
 ```
 src/design-system/        tokens.css, components.css, 10 components (Button, Input, Card, Tag, Nav, List, Sheet, Avatar, Banner, Meter)
 src/products/messaging/   Meetify, Canvas, Rooms + shared composer, message, thread, workspace state
-src/products/reader/      Now, Year, Shelves + shared data, derived stats, cover and rating components
-src/products/booking/     skill-test product
+src/products/reader/      Now, Year, Shelves + shared data, derived stats, cover and rating components, Explore sheet
+experiments/clinic-booking/  parked skill-test product (README explains the flow and how to restore it)
 src/products/registry.tsx product and concept registry, hash routing
 skills/roshyoui-design-system/   SKILL.md + references/
 docs/                     provenance.md, principles.md, components.md, validation.md, screens/
@@ -67,19 +67,18 @@ mkdir -p .claude/skills && cp -r skills/roshyoui-design-system .claude/skills/
 
 ## Testing
 
-`npm run test:e2e` builds the app, serves it, and runs three Playwright suites (Chromium) with axe-core accessibility scans, then stops the server. One-time setup: `pip install playwright` and `python3 -m playwright install chromium`.
+`npm run test:e2e` builds the app, serves it, and runs two Playwright suites (Chromium) with axe-core accessibility scans, then stops the server. One-time setup: `pip install playwright` and `python3 -m playwright install chromium`.
 
 | Suite | Checks | axe scans | Covers |
 |---|---|---|---|
-| messaging | 77 | 3 | default view shows channels, conversation, thread and composer; Favorites, Channels and Direct messages sections, favoriting, new message, DMs, meet (audio or video call), send, @mention picker, command menu, shortcuts, thread reply, filters, inbox reply, Done and Undo, huddle, mobile menus |
-| reader | 24 | 5 | page logging and validation, finishing a book, empty state, chart and month filter, shelf filters and sort, side sheet edits |
-| booking | 18 | 4 | step gating, focus management, validation, back keeps data, confirmation, mobile summary |
+| messaging | 76 | 3 | default view shows channels, conversation, thread and composer; Favorites, Channels and Direct messages sections, favoriting, new message, DMs, meet (audio or video call), send, @mention picker, command menu, shortcuts, thread reply, filters, inbox reply, Done and Undo, huddle, mobile menus |
+| reader | 38 | 6 | page logging and validation, finishing a book, empty state, chart and month filter, shelf filters and sort, side sheet edits, Explore (a different entry point per concept, recommendations, search, genre filter, add to want to read) |
 
-All 119 checks pass and axe reports zero WCAG 2 A/AA violations in the scanned states. Layouts were also checked at 390, 768 and 1280px for horizontal overflow. **Not tested:** screen readers, real touch devices, Safari, Firefox; and axe was run on default and sheet-open states, not every state.
+All 114 checks pass and axe reports zero WCAG 2 A/AA violations in the scanned states. Layouts were also checked at 390, 768 and 1280px for horizontal overflow. **Not tested:** screen readers, real touch devices, Safari, Firefox; and axe was run on default and sheet-open states, not every state.
 
 ## Skill validation
 
-Summary (full report in `docs/validation.md`): the skill carried the system to a stepwise booking flow with almost no new components, because the gap ladder resolved most needs at rung 1 or 2. It also exposed gaps: no multi-step focus guidance (now added to the skill), no disabled filter chip (added to the system), and no shared radio or select styling (a clear next promotion). **Limit:** the same agent wrote and applied the skill, so this is not an independent test. Running a fresh agent on a second brief is the recommended next step.
+Summary (full report in `docs/validation.md`): the skill carried the system to a stepwise booking flow (now parked in `experiments/clinic-booking/`) with almost no new components, because the gap ladder resolved most needs at rung 1 or 2. It also exposed gaps: no multi-step focus guidance (now added to the skill), no disabled filter chip (added to the system), and no shared radio or select styling (a clear next promotion). **Limit:** the same agent wrote and applied the skill, so this is not an independent test. Running a fresh agent on a second brief is the recommended next step.
 
 ## Technical decisions worth knowing
 

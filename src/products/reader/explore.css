@@ -1,0 +1,18 @@
+/* Explore sheet for the reader product. Tokens only. */
+.ex { display: grid; gap: var(--ds-space-4); align-content: start; }
+.ex__chips { display: flex; flex-wrap: wrap; gap: var(--ds-space-2); }
+.ex__h { font-size: var(--ds-text-title); }
+.ex__list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--ds-space-3); }
+.ex__row { display: flex; align-items: center; gap: var(--ds-space-4); padding: var(--ds-space-3); background: var(--ds-surface); border-radius: var(--ds-radius-lg); box-shadow: var(--ds-elev-1); }
+.ex__info { display: grid; gap: var(--ds-space-1); justify-items: start; min-width: 0; flex: 1; }
+.ex__row .ds-btn { flex: none; }
+@media (max-width: 480px) { .ex__row { flex-wrap: wrap; } .ex__row .ds-btn { margin-left: calc(56px + var(--ds-space-4)); } }
+
+/* Entry points, one per concept. */
+.ex-next { display: flex; align-items: center; gap: var(--ds-space-5); flex-wrap: wrap; }
+.ex-next__text { flex: 1 1 220px; min-width: 0; display: grid; gap: var(--ds-space-1); }
+.ex-next__kicker { font-size: var(--ds-text-caption); color: var(--ds-tint-ink); opacity: 0.75; }
+.ex-next__title { font-size: var(--ds-text-title); }
+.ex-tile { display: grid; gap: var(--ds-space-2); width: 100%; border: 0; background: transparent; padding: var(--ds-space-1); border-radius: var(--ds-radius-lg); text-align: left; cursor: pointer; align-content: start; font: inherit; color: inherit; transition: transform var(--ds-dur-base) var(--ds-ease); }
+.ex-tile:hover { transform: translateY(-3px); }
+.ex-tile__cover { aspect-ratio: 2 / 3; display: grid; place-items: center; border-radius: 6px 10px 10px 6px; background: var(--ds-tint-lilac); color: var(--ds-tint-ink); }

@@ -42,8 +42,9 @@ export function useLibrary() {
 
   const rate = useCallback((id: string, rating: number) => update(id, { rating }), [update]);
   const setReview = useCallback((id: string, review: string) => update(id, { review: review.trim() || undefined }), [update]);
+  const addBook = useCallback((b: Omit<Book, 'shelf'>) => setBooks((bs) => (bs.some((x) => x.id === b.id) ? bs : [...bs, { ...b, shelf: 'want' }])), []);
   const stats = useMemo(() => computeStats(books), [books]);
-  return { books, stats, setProgress, moveShelf, rate, setReview };
+  return { books, stats, setProgress, moveShelf, rate, setReview, addBook };
 }
 
 export const byShelf = (books: Book[], s: Shelf) => books.filter((b) => b.shelf === s);

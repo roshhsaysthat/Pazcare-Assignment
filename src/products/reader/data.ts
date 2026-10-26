@@ -58,3 +58,24 @@ export const initialBooks: Book[] = [
 export const SHELF_LABEL: Record<Shelf, string> = { reading: 'Currently reading', read: 'Read', want: 'Want to read', dnf: 'Did not finish' };
 export const SHELVES: Shelf[] = ['reading', 'read', 'want', 'dnf'];
 export const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+/** Books the reader has not added yet. Feeds Explore. Fictional recommendations engine, real titles, generated covers. */
+export const catalogue: Omit<Book, 'shelf'>[] = [
+  { id: 'c-hyperion', title: 'Hyperion', author: 'Dan Simmons', pages: 482, genre: 'Sci-fi', tint: 'sky' },
+  { id: 'c-three-body', title: 'The Three-Body Problem', author: 'Cixin Liu', pages: 400, genre: 'Sci-fi', tint: 'ice' },
+  { id: 'c-parable', title: 'Parable of the Sower', author: 'Octavia E. Butler', pages: 345, genre: 'Sci-fi', tint: 'peach' },
+  { id: 'c-earthsea', title: 'A Wizard of Earthsea', author: 'Ursula K. Le Guin', pages: 183, genre: 'Fantasy', tint: 'sage' },
+  { id: 'c-song', title: 'The Song of Achilles', author: 'Madeline Miller', pages: 378, genre: 'Fantasy', tint: 'butter' },
+  { id: 'c-giant', title: 'The Buried Giant', author: 'Kazuo Ishiguro', pages: 345, genre: 'Literary', tint: 'cream' },
+  { id: 'c-gilead', title: 'Gilead', author: 'Marilynne Robinson', pages: 247, genre: 'Literary', tint: 'stone' },
+  { id: 'c-wolf', title: 'Wolf Hall', author: 'Hilary Mantel', pages: 653, genre: 'Historical', tint: 'peach' },
+  { id: 'c-name', title: 'The Name of the Rose', author: 'Umberto Eco', pages: 502, genre: 'Historical', tint: 'cream' },
+  { id: 'c-entangled', title: 'Entangled Life', author: 'Merlin Sheldrake', pages: 352, genre: 'Nature', tint: 'sage' },
+  { id: 'c-wild', title: 'H is for Hawk', author: 'Helen Macdonald', pages: 300, genre: 'Nature', tint: 'butter' },
+  { id: 'c-emotional', title: 'Emotional Design', author: 'Don Norman', pages: 280, genre: 'Design', tint: 'lilac' },
+  { id: 'c-shape', title: 'The Shape of Design', author: 'Frank Chimero', pages: 128, genre: 'Design', tint: 'lilac' },
+  { id: 'c-justkids', title: 'Just Kids', author: 'Patti Smith', pages: 304, genre: 'Memoir', tint: 'cream' },
+  { id: 'c-sapiens', title: 'Sapiens', author: 'Yuval Noah Harari', pages: 464, genre: 'Nonfiction', tint: 'stone' },
+  { id: 'c-secret', title: 'The Secret History', author: 'Donna Tartt', pages: 559, genre: 'Mystery', tint: 'ice' },
+  { id: 'c-rebecca', title: 'Rebecca', author: 'Daphne du Maurier', pages: 449, genre: 'Mystery', tint: 'rose' },
+];

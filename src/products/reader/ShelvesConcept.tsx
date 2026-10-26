@@ -1,8 +1,10 @@
 import { useMemo, useState } from 'react';
+import { MagnifyingGlass } from '@phosphor-icons/react';
 import { Avatar, Button, FilterTag, Meter, Sheet, Tag, Textarea } from '../../design-system';
 import { fmtDate, useLibrary } from './library';
 import { reader, SHELF_LABEL, SHELVES, type Book, type Shelf } from './data';
 import { Cover, RatingInput, Stars } from './shared';
+import { Explore } from './Explore';
 import './reader.css';
 import './shelves.css';
 
@@ -110,10 +112,15 @@ export default function ShelvesConcept() {
 
       <p role="status" className="ds-muted sh__count">Showing {shown.length} {shown.length === 1 ? 'book' : 'books'}</p>
 
-      {shown.length === 0 ? (
-        <p className="sh__empty ds-muted">No books match. Try another shelf or genre.</p>
-      ) : (
+      <Explore lib={lib}>{(open) => (
         <ul className="sh__grid" aria-label="Books">
+          <li>
+            <button type="button" className="ex-tile" onClick={open}>
+              <span className="ex-tile__cover"><MagnifyingGlass size="2em" aria-hidden="true" /></span>
+              <strong>See other books</strong>
+              <span className="ds-muted">Picks and search</span>
+            </button>
+          </li>
           {shown.map((b) => (
             <li key={b.id}>
               <button type="button" className="sh__book" onClick={() => setOpenId(b.id)} aria-label={`${b.title} by ${b.author}. ${SHELF_LABEL[b.shelf]}. Open details`}>
@@ -126,7 +133,8 @@ export default function ShelvesConcept() {
             </li>
           ))}
         </ul>
-      )}
+      )}</Explore>
+      {shown.length === 0 && <p className="sh__empty ds-muted">No books match. Try another shelf or genre.</p>}
 
       <Sheet open={!!open} onClose={() => setOpenId(null)} title={open?.title ?? 'Book'} side="right">
         {open && <Detail key={open.id} book={open} lib={lib} onClose={() => setOpenId(null)} />}

@@ -4,6 +4,7 @@ import { Avatar, Banner, Button, Card, Input, List, ListRow, Meter, Sheet, Tag }
 import { byShelf, fmtDate, useLibrary } from './library';
 import { reader, SHELVES, SHELF_LABEL, type Book, type Shelf } from './data';
 import { Cover, Stars } from './shared';
+import { Explore } from './Explore';
 import './reader.css';
 import './now.css';
 
@@ -84,6 +85,14 @@ export default function NowConcept() {
             </ul>
           )}
         </section>
+
+        <Explore lib={lib}>{(open, top) => top && (
+          <Card variant="tint" tint="peach" size="lg" className="ex-next">
+            <Cover book={{ ...top.book, shelf: 'want' }} width={64} />
+            <div className="ex-next__text"><p className="ex-next__kicker">Next up for you</p><h2 className="ex-next__title">{top.book.title}</h2><p>{top.because}.</p></div>
+            <Button variant="primary" onClick={open}>Find your next read</Button>
+          </Card>
+        )}</Explore>
 
         <section aria-labelledby="reviews-h">
           <h2 id="reviews-h" className="rd-label">Recent reviews</h2>

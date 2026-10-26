@@ -6,7 +6,7 @@
 
 Chosen because it differs from both products already built: it is a **stepwise task** (not triage, reading or browsing) and needs patterns the system has never defined: a stepper, a day and time picker, a form with validation, a summary, a confirmation.
 
-Result: `src/products/booking/` (`#/booking/flow`).
+Result: `experiments/clinic-booking/` (parked, see its README; was `#/booking/flow`).
 
 ## How the test was run, and its limit
 

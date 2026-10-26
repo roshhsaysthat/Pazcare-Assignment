@@ -8,7 +8,7 @@ The portfolio is one editorial column. That suits reading and reflecting. Most p
 | Read and reflect | Single editorial column, about 65ch, side rail for secondary info | `messaging/CanvasConcept`, `reader/NowConcept` |
 | Monitor numbers | Stat strip, one primary visual, then a list. Never a grid of identical cards | `reader/YearConcept` |
 | Browse a collection | Visual grid, filter chips, detail in a side or bottom sheet | `reader/ShelvesConcept` |
-| Complete a task | One-column stepwise flow, one primary button per step | `booking/BookingFlow` (stepper is a `Meter` with a text label; summary beside the form, in a native `<details>` on mobile). Report in `docs/validation.md` |
+| Complete a task | One-column stepwise flow, one primary button per step | `experiments/clinic-booking/src/BookingFlow` (stepper is a `Meter` with a text label; summary beside the form, in a native `<details>` on mobile). Report in `docs/validation.md` |
 
 ## Density and theme
 

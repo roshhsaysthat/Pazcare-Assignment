@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Avatar, Card, FilterTag, List, ListRow, Meter, Tag } from '../../design-system';
+import { Avatar, Button, Card, FilterTag, List, ListRow, Meter, Tag } from '../../design-system';
 import { byShelf, fmtDate, useLibrary } from './library';
 import { MONTHS, reader, SHELVES, SHELF_LABEL } from './data';
 import { Cover, Stars } from './shared';
+import { Explore } from './Explore';
 import { YearChart, type Mode } from './YearChart';
 import './reader.css';
 import './year.css';
@@ -18,7 +19,8 @@ function Stat({ label, value, sub }: { label: string; value: React.ReactNode; su
 }
 
 export default function YearConcept() {
-  const { books, stats } = useLibrary();
+  const lib = useLibrary();
+  const { books, stats } = lib;
   const [mode, setMode] = useState<Mode>('progress');
   const [month, setMonth] = useState('all');
   const behind = stats.delta < 0;
@@ -40,6 +42,13 @@ export default function YearConcept() {
         <Stat label="Average rating" value={stats.avg.toFixed(1)} sub={<Stars value={Math.round(stats.avg)} />} />
         <Stat label="Pace" value={behind ? `${Math.abs(stats.delta)} behind` : 'On pace'} sub={<>{behind ? <Tag tone="signal" dot>Behind pace</Tag> : <Tag tone="success" dot>On or ahead</Tag>}{stats.remaining > 0 && <span className="stat__note">Needs {stats.perWeekNeeded.toFixed(1)} books a week</span>}</>} />
       </dl>
+
+      <Explore lib={lib}>{(open) => (
+        <Card variant="tint" tint="butter" size="lg" className="ex-next year__gap">
+          <div className="ex-next__text"><p className="ex-next__kicker">{stats.remaining > 0 ? 'Closing the gap' : 'Goal reached'}</p><h2 className="ex-next__title">{stats.remaining > 0 ? `${stats.remaining} ${stats.remaining === 1 ? 'book' : 'books'} to reach ${reader.goal}.` : `You hit ${reader.goal}. Keep going.`}</h2><p>Short reads in genres you rate highly get you there fastest.</p></div>
+          <Button variant="primary" onClick={open}>{stats.remaining > 0 ? `Find ${stats.remaining === 1 ? 'the last one' : 'books for the goal'}` : 'Find more books'}</Button>
+        </Card>
+      )}</Explore>
 
       <div className="year__grid">
         <Card size="xl" className="year__chart">
