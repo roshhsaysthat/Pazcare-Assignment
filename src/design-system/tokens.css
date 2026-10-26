@@ -27,6 +27,7 @@
   --ds-tint-peach: #f9bfa3;
   --ds-tint-butter: #f8d56e;
   --ds-tint-lilac: #c3b4f2;
+  --ds-tint-rose: #f4b6cf; /* inferred: no pink in the screenshots; added for the direct message accent */
   --ds-tint-ink: #000;
   --ds-white: #fff; /* constant, does not flip in dark theme: tint cards always fade toward white */
 

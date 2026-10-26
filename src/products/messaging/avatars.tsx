@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react';
-import { Avatar } from '../../design-system';
+import { Avatar, type Tint } from '../../design-system';
+import { ME } from './data';
 
 /**
  * Illustrated profile pictures for the fictional team, drawn as small flat SVGs (no real photos, nothing to download).
@@ -23,6 +24,10 @@ function draw(l: Look) {
   const glasses = l.glasses ? '<g fill="none" stroke="#222" stroke-width="1.1"><circle cx="27.5" cy="29" r="3.6"/><circle cx="36.5" cy="29" r="3.6"/><path d="M31 29h2"/></g>' : '';
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="${l.bg}"/>${back}<path d="M8 64C8 49 20 44 32 44s24 5 24 20Z" fill="${l.shirt}"/><rect x="28" y="36" width="8" height="11" rx="3" fill="${l.skin}"/><ellipse cx="32" cy="28" rx="11" ry="13" fill="${l.skin}"/>${front}<circle cx="27.5" cy="29" r="1.3" fill="#222"/><circle cx="36.5" cy="29" r="1.3" fill="#222"/>${glasses}<path d="M28 35Q32 38.5 36 35" fill="none" stroke="#222" stroke-width="1.2" stroke-linecap="round"/></svg>`;
 }
+
+/** Accent for a person's text box in direct messages: you are rose, everyone else keeps one colour of their own. */
+const bubbleTints: Record<string, Tint> = { dev: 'sage', mira: 'lilac', anika: 'sky', tomas: 'butter', priya: 'peach', leo: 'ice' };
+export const bubbleTint = (personId: string): Tint => (personId === ME ? 'rose' : bubbleTints[personId] ?? 'stone');
 
 const cache = new Map<string, string>();
 export function avatarFor(name: string): string | undefined {

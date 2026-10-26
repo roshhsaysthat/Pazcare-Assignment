@@ -48,3 +48,10 @@
 .thread__divider { display: flex; align-items: center; gap: var(--ds-space-3); margin: var(--ds-space-3) var(--ds-space-3); color: var(--ds-text-muted); font-size: var(--ds-text-caption); }
 .thread__divider::before, .thread__divider::after { content: ''; flex: 1; height: 1px; background: var(--ds-border); }
 .thread__compose { padding: var(--ds-space-3) var(--ds-space-4) var(--ds-space-4); }
+
+/* Direct messages: each person's text box has its own accent (you are rose). */
+.msg--bubble .msg__main { background: color-mix(in srgb, var(--bubble) 30%, var(--ds-surface)); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--bubble) 75%, transparent); border-radius: var(--ds-radius-lg); padding: var(--ds-space-2) var(--ds-space-3); }
+.dm-compose .composer__row { background: color-mix(in srgb, var(--bubble) 30%, var(--ds-surface)); box-shadow: 0 0 0 1px color-mix(in srgb, var(--bubble) 75%, transparent); }
+.dm-compose .composer__row:focus-within { box-shadow: 0 0 0 2px var(--ds-text); }
+/* Dark theme: a lighter touch so muted text keeps its contrast on the tint. */
+[data-ds-theme='dark'] .msg--bubble .msg__main, [data-ds-theme='dark'] .dm-compose .composer__row { background: color-mix(in srgb, var(--bubble) 14%, var(--ds-surface)); }

@@ -1,5 +1,5 @@
 import { ChatCircleText, Paperclip } from '@phosphor-icons/react';
-import { Avatar, Card, Meter, Tag } from '../../design-system';
+import { Card, Meter, Tag, tintVar, type Tint } from '../../design-system';
 import { PersonAvatar } from './avatars';
 import { personById, type Message } from './data';
 import { rich } from './rich';
@@ -12,13 +12,14 @@ type Props = {
   avatarSize?: number;
   grouped?: boolean; // hide avatar for consecutive messages
   threadActive?: boolean;
+  tint?: Tint; // direct messages: draw the message as a text box in this accent
 };
 
 /** One message. Bot messages get a square avatar and an optional candidate card. */
-export function MessageItem({ msg, replyCount = 0, lastReply, onOpenThread, avatarSize = 36, grouped, threadActive }: Props) {
+export function MessageItem({ msg, replyCount = 0, lastReply, onOpenThread, avatarSize = 36, grouped, threadActive, tint }: Props) {
   const p = personById(msg.author);
   return (
-    <article className={`msg${grouped ? ' msg--grouped' : ''}`} aria-label={`${p.name} at ${msg.time}`} style={{ ['--msg-avatar' as string]: `${avatarSize}px` }}>
+    <article className={`msg${grouped ? ' msg--grouped' : ''}${tint ? ' msg--bubble' : ''}`} aria-label={`${p.name} at ${msg.time}`} style={{ ['--msg-avatar' as string]: `${avatarSize}px`, ...(tint ? { ['--bubble' as string]: tintVar(tint) } : {}) }}>
       <div className="msg__avatar">
         {grouped ? <span className="ds-sr-only">{p.name}</span> : <PersonAvatar name={p.name} size={avatarSize} shape={p.bot ? 'square' : 'circle'} status={p.bot ? undefined : p.status} />}
       </div>

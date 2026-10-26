@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Hash, List as ListIcon, MagnifyingGlass, Moon, NotePencil, Phone, SpeakerHigh, Star, Sun, Users, VideoCamera, X } from '@phosphor-icons/react';
-import { Avatar, Button, Input, List, ListRow, Nav, Sheet, type NavItem } from '../../design-system';
-import { PersonAvatar } from './avatars';
+import { Avatar, Button, Input, List, ListRow, Nav, Sheet, tintVar, type NavItem } from '../../design-system';
+import { PersonAvatar, bubbleTint } from './avatars';
 import { Composer } from './Composer';
 import { MessageItem } from './MessageItem';
 import { ThreadPanel } from './ThreadPanel';
@@ -283,13 +283,13 @@ export default function RailConcept() {
             const grouped = idx > 0 && messages[idx - 1].author === m.author && !m.candidate && !messages[idx - 1].candidate;
             return (
               <div key={m.id} data-idx={idx} data-cursor={idx === cursor || undefined} className="rail__row" onClick={() => setCursor(idx)}>
-                <MessageItem msg={m} grouped={grouped} replyCount={th?.replies.length} lastReply={th?.replies.at(-1)?.time} onOpenThread={() => openThread(m.id)} threadActive={openRoot === m.id} />
+                <MessageItem msg={m} tint={channel.dm ? bubbleTint(m.author) : undefined} grouped={grouped} replyCount={th?.replies.length} lastReply={th?.replies.at(-1)?.time} onOpenThread={() => openThread(m.id)} threadActive={openRoot === m.id} />
               </div>
             );
           })}
         </div>
 
-        <div className="rail__compose">
+        <div className={`rail__compose${channel.dm ? ' dm-compose' : ''}`} style={channel.dm ? { ['--bubble' as string]: tintVar(bubbleTint(ME)) } : undefined}>
           <Composer label={channel.dm ? `Message ${channel.name}` : `Message #${channel.name}`} placeholder={channel.dm ? `Message ${channel.name}` : `Message #${channel.name}`} inputRef={composer} onSend={(t, f) => send(t, f)} />
           <p className="rail__keys" aria-label="Keyboard shortcuts">
             <span><kbd>/</kbd> write</span><span><kbd>J</kbd><kbd>K</kbd> move</span><span><kbd>T</kbd> thread</span><span><kbd>Ctrl K</kbd> jump</span><span><kbd>Alt</kbd><kbd>↑</kbd><kbd>↓</kbd> channels</span>

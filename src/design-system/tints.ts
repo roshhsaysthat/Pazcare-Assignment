@@ -1,4 +1,4 @@
-export type Tint = 'sky' | 'ice' | 'stone' | 'cream' | 'sage' | 'peach' | 'butter' | 'lilac';
+export type Tint = 'sky' | 'ice' | 'stone' | 'cream' | 'sage' | 'peach' | 'butter' | 'lilac' | 'rose';
 export const TINTS: Tint[] = ['sky', 'ice', 'cream', 'sage', 'peach', 'butter', 'lilac', 'stone'];
 export const tintVar = (t: Tint) => `var(--ds-tint-${t})`;
 

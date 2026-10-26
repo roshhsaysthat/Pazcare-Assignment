@@ -71,11 +71,11 @@ mkdir -p .claude/skills && cp -r skills/roshyoui-design-system .claude/skills/
 
 | Suite | Checks | axe scans | Covers |
 |---|---|---|---|
-| messaging | 50 | 3 | default view shows channels, conversation, thread and composer; Favorites, Channels and Direct messages sections, favoriting, new message, DMs, meet (audio or video call), send, @mention picker, command menu, shortcuts, thread reply, filters, inbox reply, Done and Undo, huddle, mobile menus |
+| messaging | 67 | 3 | default view shows channels, conversation, thread and composer; Favorites, Channels and Direct messages sections, favoriting, new message, DMs, meet (audio or video call), send, @mention picker, command menu, shortcuts, thread reply, filters, inbox reply, Done and Undo, huddle, mobile menus |
 | reader | 24 | 5 | page logging and validation, finishing a book, empty state, chart and month filter, shelf filters and sort, side sheet edits |
 | booking | 18 | 4 | step gating, focus management, validation, back keeps data, confirmation, mobile summary |
 
-All 92 checks pass and axe reports zero WCAG 2 A/AA violations in the scanned states. Layouts were also checked at 390, 768 and 1280px for horizontal overflow. **Not tested:** screen readers, real touch devices, Safari, Firefox; and axe was run on default and sheet-open states, not every state.
+All 109 checks pass and axe reports zero WCAG 2 A/AA violations in the scanned states. Layouts were also checked at 390, 768 and 1280px for horizontal overflow. **Not tested:** screen readers, real touch devices, Safari, Firefox; and axe was run on default and sheet-open states, not every state.
 
 ## Skill validation
 

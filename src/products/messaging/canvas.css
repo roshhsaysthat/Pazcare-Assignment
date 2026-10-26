@@ -25,3 +25,24 @@
 .canvas__panel h2 { font-size: var(--ds-text-h2); }
 .canvas__empty { padding: var(--ds-space-8) 0; text-align: center; }
 @media (max-width: 639px) { .canvas__replies { margin-left: 12px; padding-left: var(--ds-space-3); } .canvas__main { padding-left: var(--ds-space-3); padding-right: var(--ds-space-3); } }
+
+/* Direct messages: profile header, flat chat, docked composer. */
+.canvas__head--dm { grid-auto-flow: column; justify-content: start; align-items: center; gap: var(--ds-space-4); padding-top: var(--ds-space-4); }
+.canvas__head--dm h1 { font-size: var(--ds-text-h2); }
+.canvas__chat { display: grid; align-content: start; }
+.canvas__msg { display: grid; gap: var(--ds-space-2); padding: var(--ds-space-3) var(--ds-space-2); border-bottom: 1px solid var(--ds-border); }
+.canvas__chat > .canvas__msg:last-child { border-bottom: 0; }
+.canvas__dock { position: sticky; bottom: 0; z-index: 10; background: var(--ds-bg); padding: var(--ds-space-2) 0 var(--ds-space-3); }
+/* Chat view: the message box is pinned to the bottom of the screen even when the conversation is short. */
+.canvas__main--chat { min-height: calc(100dvh - var(--shell-h, 0px)); grid-template-rows: auto auto auto 1fr auto; align-content: stretch; padding-bottom: 0; }
+
+/* Search: its own pill beside the tabs, built from the same Nav pill and item styles. Open, the tabs shrink to icons (labels stay for screen readers) and the field takes the room. */
+.canvas__pill-btn { width: auto; flex: none; }
+.canvas__nav .canvas__search { flex: 1; min-width: 0; max-width: 440px; align-items: center; }
+.canvas__search:focus-within { box-shadow: var(--ds-elev-3), var(--ds-focus-ring); }
+.canvas__search-icon { flex: none; margin-left: var(--ds-space-3); color: var(--ds-text-muted); }
+.canvas__search .ds-field { flex: 1; min-width: 0; }
+.canvas__search .ds-input, .canvas__search .ds-input:hover, .canvas__search .ds-input:focus { border: 0; background: transparent; box-shadow: none; height: 36px; padding: 0 var(--ds-space-2); border-radius: 0; }
+.canvas__nav--search .ds-nav--pill .ds-nav__label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.canvas__results { display: grid; gap: var(--ds-space-4); }
+.canvas__results mark { background: color-mix(in srgb, var(--ds-signal) 22%, transparent); color: inherit; border-radius: 4px; padding: 0 2px; }
