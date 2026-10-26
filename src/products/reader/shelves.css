@@ -1,0 +1,34 @@
+/* Concept C: Shelves. The collection is the page: filter chips, a cover grid, details in a sheet. */
+.sh { display: grid; gap: var(--ds-space-5); padding: var(--ds-space-6) var(--ds-space-4) var(--ds-space-24); max-width: 1200px; margin: 0 auto; align-content: start; }
+@media (min-width: 900px) { .sh { padding: var(--ds-space-8) var(--ds-space-6) var(--ds-space-24); } }
+.sh__head { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--ds-space-6); flex-wrap: wrap; }
+.sh__who { display: flex; gap: var(--ds-space-4); align-items: center; min-width: 0; flex: 1 1 420px; }
+.sh__who .rd-title { font-size: var(--ds-text-h2); }
+.sh__bookcount { color: var(--ds-text); }
+.sh__goal { display: grid; gap: var(--ds-space-2); width: min(100%, 280px); }
+.sh__goal-label { font-size: var(--ds-text-caption); font-weight: 500; color: var(--ds-text-muted); }
+.sh__goal .ds-tag { justify-self: start; }
+.sh__bar { display: flex; justify-content: space-between; gap: var(--ds-space-4); flex-wrap: wrap; align-items: center; position: sticky; top: var(--shell-h, 0px); z-index: 5; background: var(--ds-bg); padding: var(--ds-space-3) 0; border-bottom: 1px solid var(--ds-border); }
+.sh__chips, .sh__selects { display: flex; gap: var(--ds-space-2); flex-wrap: wrap; align-items: center; }
+.sh__select { display: inline-flex; align-items: center; gap: var(--ds-space-2); }
+.sh__select select { width: auto; }
+.sh__count { font-size: var(--ds-text-caption); }
+.sh__grid { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--ds-space-6) var(--ds-space-4); grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); }
+.sh__book { display: grid; gap: var(--ds-space-2); width: 100%; border: 0; background: transparent; padding: var(--ds-space-1); border-radius: var(--ds-radius-lg); text-align: left; cursor: pointer; align-content: start; transition: transform var(--ds-dur-base) var(--ds-ease); }
+.sh__book:hover { transform: translateY(-3px); }
+.sh__book:hover .cover { box-shadow: inset 4px 0 0 rgb(0 0 0 / 0.1), var(--ds-elev-3); }
+.sh__book-meta { display: flex; align-items: center; gap: var(--ds-space-2); flex-wrap: wrap; font-size: var(--ds-text-caption); }
+.sh__book-meta .ds-meter { flex: 1; min-width: 80px; }
+.sh__empty { padding: var(--ds-space-16) 0; text-align: center; }
+@media (prefers-reduced-motion: reduce) { .sh__book:hover { transform: none; } }
+
+.sh-detail { padding: var(--ds-space-5); display: grid; gap: var(--ds-space-5); }
+.sh-detail__top { display: flex; gap: var(--ds-space-4); }
+.sh-detail__title { font-size: var(--ds-text-h2); margin-bottom: var(--ds-space-1); }
+.sh-field { display: grid; gap: var(--ds-space-2); justify-items: start; }
+.sh-field > .ds-input, .sh-field > .ds-field, .sh-detail__page { width: 100%; }
+.sh-field__label { font-size: var(--ds-text-caption); font-weight: 500; color: var(--ds-text-muted); }
+label.sh-field { display: grid; }
+.sh-field .ds-meter { width: 100%; }
+.sh-detail__page { display: flex; gap: var(--ds-space-2); }
+@media (max-width: 639px) { .sh__bar { top: var(--shell-h, 0px); } .sh__selects { width: 100%; } .sh__select { flex: 1; } .sh__select select { flex: 1; min-width: 0; } .sh__select span { display: none; } }

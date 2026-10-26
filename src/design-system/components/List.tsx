@@ -5,7 +5,7 @@ export function List({ label, children, className = '' }: { label: string; child
   const onKey = (e: KeyboardEvent<HTMLUListElement>) => {
     const keys = ['ArrowDown', 'ArrowUp', 'Home', 'End'];
     if (!keys.includes(e.key)) return;
-    const rows = Array.from(e.currentTarget.querySelectorAll<HTMLElement>('.ds-row'));
+    const rows = Array.from(e.currentTarget.querySelectorAll<HTMLElement>('button.ds-row'));
     const i = rows.indexOf(document.activeElement as HTMLElement);
     if (i < 0) return;
     e.preventDefault();
@@ -30,17 +30,25 @@ type RowProps = {
 };
 
 export function ListRow({ title, description, leading, meta, trailing, current, onClick }: RowProps) {
+  const inner = (
+    <>
+      {leading}
+      <span className="ds-row__body">
+        <span className="ds-row__title">{title}</span>
+        {description && <span className="ds-row__desc">{description}</span>}
+      </span>
+      {meta && <span className="ds-row__meta">{meta}</span>}
+      {trailing}
+    </>
+  );
+  // Only rows that DO something are buttons. A static row must not be a dead tab stop.
   return (
     <li>
-      <button type="button" className="ds-row" aria-current={current ? 'true' : undefined} onClick={onClick}>
-        {leading}
-        <span className="ds-row__body">
-          <span className="ds-row__title">{title}</span>
-          {description && <span className="ds-row__desc">{description}</span>}
-        </span>
-        {meta && <span className="ds-row__meta">{meta}</span>}
-        {trailing}
-      </button>
+      {onClick ? (
+        <button type="button" className="ds-row" aria-current={current ? 'true' : undefined} onClick={onClick}>{inner}</button>
+      ) : (
+        <div className="ds-row ds-row--static">{inner}</div>
+      )}
     </li>
   );
 }

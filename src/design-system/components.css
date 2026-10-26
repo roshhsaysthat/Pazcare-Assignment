@@ -125,6 +125,8 @@ button.ds-tag[aria-pressed='true'], button.ds-tag[aria-selected='true'] { backgr
 }
 .ds-list > li:last-child > .ds-row { border-bottom: 0; }
 .ds-row:hover { background: var(--ds-surface-sunken); }
+.ds-row--static { cursor: default; }
+.ds-row--static:hover { background: transparent; }
 .ds-row[aria-current='true'] { background: var(--ds-surface-sunken); }
 .ds-row__body { flex: 1; min-width: 0; display: grid; }
 .ds-row__title { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

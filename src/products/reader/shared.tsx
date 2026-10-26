@@ -4,9 +4,9 @@ import { tintVar } from '../../design-system';
 import type { Book } from './data';
 
 /** Generated cover: original typography on a tint. No real cover art is used. */
-export function Cover({ book, width = 96 }: { book: Book; width?: number }) {
+export function Cover({ book, width = 96, fluid }: { book: Book; width?: number; fluid?: boolean }) {
   return (
-    <div className="cover" role="img" aria-label={`Cover of ${book.title} by ${book.author}`} style={{ width, ['--cw' as string]: `${width}px`, ['--tint' as string]: tintVar(book.tint) }}>
+    <div className="cover" role="img" aria-label={`Cover of ${book.title} by ${book.author}`} style={{ width: fluid ? '100%' : width, ['--cw' as string]: `${width}px`, ['--tint' as string]: tintVar(book.tint) }}>
       <span className="cover__title" style={{ fontSize: Math.max(10, width * 0.15) }}>{book.title}</span>
       <span className="cover__author" style={{ fontSize: Math.max(8, width * 0.095) }}>{book.author}</span>
     </div>
