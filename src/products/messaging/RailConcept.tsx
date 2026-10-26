@@ -3,6 +3,7 @@ import { Hash, List as ListIcon, MagnifyingGlass, Moon, NotePencil, Phone, Speak
 import { Avatar, Button, Input, List, ListRow, Nav, Sheet, tintVar, type NavItem } from '../../design-system';
 import { PersonAvatar, bubbleTint } from './avatars';
 import { Composer } from './Composer';
+import { CopyLink, channelLink } from './CopyLink';
 import { MessageItem } from './MessageItem';
 import { ThreadPanel } from './ThreadPanel';
 import { type Channel, type Message, dmChannels, dmMessages, people, personById, profiles, ME } from './data';
@@ -250,6 +251,7 @@ export default function RailConcept() {
               </>
             )}
           </div>
+          {!channel.dm && <CopyLink label={`Copy link to #${channel.name}`} url={channelLink(channel.name)} />}
           <Button variant="ghost" iconOnly aria-label="Start audio call" icon={<Phone size="1.25em" />} onClick={() => setCall({ kind: 'audio', id: channelId })} />
           <Button variant="ghost" iconOnly aria-label="Start video call" icon={<VideoCamera size="1.25em" />} onClick={() => setCall({ kind: 'video', id: channelId })} />
           <Button variant="ghost" iconOnly aria-label={favs.has(channelId) ? 'Remove from favorites' : 'Add to favorites'} aria-pressed={favs.has(channelId)} icon={<Star size="1.25em" weight={favs.has(channelId) ? 'fill' : 'regular'} />} onClick={() => toggleFav(channelId)} />

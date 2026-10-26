@@ -19,7 +19,7 @@ Needs Node 18+. No backend: all state is local React state and resets on reload.
 |---|---|---|---|
 | **A. Team messaging** (hiring and design-automation team) | **Meetify** (keyboard-driven) | Channels, thread and composer in view together, driven from the keyboard (Ctrl+K, j/k/t) | **Yes** |
 | | **Canvas** (conversation-first) | Every post carries its thread inline, so replies are the main reading experience | |
-| | **Rooms** (unified inbox) | One inbox of mentions across all channels, reply in place, live huddles one tap away | |
+| | **Rooms** (unified inbox) | One inbox of mentions across all channels, reply in place, live rooms one tap away | |
 | **B. Reader profile** | **Now** (reading-first) | The book in your hands leads: update your page in two taps, challenge and shelves in a side rail | **Yes** |
 | | **Year** (stats-first) | A stat strip, one chart of progress against the goal, then what you read | |
 | | **Shelves** (collection-first) | The library is the page: cover grid, filters, every book editable in a side sheet | |
@@ -71,11 +71,11 @@ mkdir -p .claude/skills && cp -r skills/roshyoui-design-system .claude/skills/
 
 | Suite | Checks | axe scans | Covers |
 |---|---|---|---|
-| messaging | 67 | 3 | default view shows channels, conversation, thread and composer; Favorites, Channels and Direct messages sections, favoriting, new message, DMs, meet (audio or video call), send, @mention picker, command menu, shortcuts, thread reply, filters, inbox reply, Done and Undo, huddle, mobile menus |
+| messaging | 77 | 3 | default view shows channels, conversation, thread and composer; Favorites, Channels and Direct messages sections, favoriting, new message, DMs, meet (audio or video call), send, @mention picker, command menu, shortcuts, thread reply, filters, inbox reply, Done and Undo, huddle, mobile menus |
 | reader | 24 | 5 | page logging and validation, finishing a book, empty state, chart and month filter, shelf filters and sort, side sheet edits |
 | booking | 18 | 4 | step gating, focus management, validation, back keeps data, confirmation, mobile summary |
 
-All 109 checks pass and axe reports zero WCAG 2 A/AA violations in the scanned states. Layouts were also checked at 390, 768 and 1280px for horizontal overflow. **Not tested:** screen readers, real touch devices, Safari, Firefox; and axe was run on default and sheet-open states, not every state.
+All 119 checks pass and axe reports zero WCAG 2 A/AA violations in the scanned states. Layouts were also checked at 390, 768 and 1280px for horizontal overflow. **Not tested:** screen readers, real touch devices, Safari, Firefox; and axe was run on default and sheet-open states, not every state.
 
 ## Skill validation
 
@@ -92,7 +92,7 @@ Summary (full report in `docs/validation.md`): the skill carried the system to a
 
 ## Known limitations
 
-- Some UI is mocked: Meetify's direct messages are seeded with a few lines and have no real replies, calls are simulated with no audio or video, Canvas's Files and People tabs are light, and huddles have no audio. On Meetify at widths under 1200px the thread opens in a side sheet instead of being visible by default. The booking flow stores nothing and says so on screen.
+- Some UI is mocked: Meetify's direct messages are seeded with a few lines and have no real replies, calls are simulated with no audio or video, Canvas's Files and People tabs are light, and live rooms have no audio. On Meetify at widths under 1200px the thread opens in a side sheet instead of being visible by default. The booking flow stores nothing and says so on screen.
 - Message formatting supports bold, code and mentions only.
 - The skill test was not independent (above).
 - Dark theme contrast was scanned in Meetify's default view only.

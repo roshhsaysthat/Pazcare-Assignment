@@ -3,6 +3,7 @@ import { ArrowBendUpLeft, ArrowLeft, Check, HandWaving, Hash, Microphone, Microp
 import { Avatar, Banner, Button, Card, FilterTag, List, ListRow, Sheet, Tag, tintVar } from '../../design-system';
 import { PersonAvatar } from './avatars';
 import { Composer } from './Composer';
+import { CopyLink, channelLink, inviteLink } from './CopyLink';
 import { MessageItem } from './MessageItem';
 import { ThreadPanel } from './ThreadPanel';
 import { personById, ME, type Channel, type Message } from './data';
@@ -11,6 +12,9 @@ import './rooms.css';
 
 type Item = { key: string; channel: Channel; msg: Message; kind: 'mention' | 'unread' };
 type Notice = { text: string; undo?: () => void };
+
+// People who opened the invite link to the portfolio review room and are waiting to be let in.
+const guests = [{ id: 'noor', name: 'Noor Hadid' }, { id: 'sam', name: 'Sam Ortega' }];
 
 export default function RoomsConcept() {
   const ws = useWorkspace('automation');
@@ -25,6 +29,15 @@ export default function RoomsConcept() {
   const [started, setStarted] = useState<Set<string>>(new Set());
   const [muted, setMuted] = useState(true);
   const [hand, setHand] = useState(false);
+  const [waiting, setWaiting] = useState(guests);
+  const [admitted, setAdmitted] = useState<typeof guests>([]);
+  const [lastCall, setLastCall] = useState('');
+  const decide = (g: (typeof guests)[number], accept: boolean) => {
+    setWaiting((w) => w.filter((x) => x.id !== g.id));
+    if (accept) setAdmitted((a) => [...a, g]);
+    setLastCall(`${g.name} was ${accept ? 'accepted into' : 'declined from'} the room.`);
+  };
+  const gated = channelId === 'portfolio-reviews';
 
   /** The unified inbox: mentions first, then the latest message of every channel that still has unread. */
   const items: Item[] = useMemo(() => {
@@ -55,7 +68,7 @@ export default function RoomsConcept() {
     setNotice({ text: `Marked done in #${it.channel.name}.`, undo: () => { setDone((d) => { const n = new Set(d); n.delete(it.msg.id); return n; }); setNotice(null); } });
   };
 
-  const live = channel.live ?? (started.has(channelId) ? { title: 'Impromptu huddle', speakers: [ME], listeners: 1 } : undefined);
+  const live = channel.live ?? (started.has(channelId) ? { title: 'Pull-up chat', speakers: [ME], listeners: 1 } : undefined);
   const isJoined = joined.has(channelId);
   const toggleJoin = () => setJoined((s) => { const n = new Set(s); n.has(channelId) ? n.delete(channelId) : n.add(channelId); return n; });
 
@@ -74,7 +87,7 @@ export default function RoomsConcept() {
             <h2 className="rooms__label"><span className="rooms__pulse" aria-hidden="true" /> Live now</h2>
             <ul className="rooms__live-list">
               {liveRooms.map((c) => {
-                const l = c.live ?? { title: 'Impromptu huddle', speakers: [ME], listeners: 1 };
+                const l = c.live ?? { title: 'Pull-up chat', speakers: [ME], listeners: 1 };
                 return (
                   <li key={c.id}>
                     <Card variant="tint" tint={c.tint} size="lg" className="rooms__live-card">
@@ -172,6 +185,7 @@ export default function RoomsConcept() {
             <h2><span className="ds-soft">#</span>{channel.name}</h2>
             <p className="ds-muted">{channel.topic}</p>
           </div>
+          <span className="rooms__room-share"><CopyLink label={`Copy link to #${channel.name}`} url={channelLink(channel.name)} /></span>
         </header>
 
         <Card variant="tint" tint={channel.tint} size="xl" className="rooms__stage">
@@ -180,7 +194,8 @@ export default function RoomsConcept() {
               <div className="rooms__stage-top">
                 <Tag tone="danger" dot>Live</Tag>
                 <strong>{live.title}</strong>
-                <span>{live.listeners + (isJoined ? 1 : 0)} listening</span>
+                <span className="rooms__listening">{live.listeners + (isJoined ? 1 : 0) + (gated ? admitted.length : 0)} listening</span>
+                <CopyLink variant="secondary" size="sm" label="Copy invite link" text="Copy invite link" url={inviteLink(live.title === 'Pull-up chat' ? `${channel.name} pull-up chat` : live.title)} />
               </div>
               <ul className="rooms__speakers" aria-label="Speakers">
                 {live.speakers.map((s, i) => (
@@ -189,8 +204,22 @@ export default function RoomsConcept() {
                     <span>{personById(s).name.split(' ')[0]}</span>
                   </li>
                 ))}
+                {gated && admitted.map((g) => <li key={g.id}><span className="rooms__ring"><Avatar name={g.name} size={64} /></span><span>{g.name.split(' ')[0]}</span></li>)}
                 {isJoined && <li><span className="rooms__ring"><PersonAvatar name={me.name} size={64} /></span><span>You</span></li>}
               </ul>
+              {gated && waiting.length > 0 && (
+                <ul className="rooms__waiting" aria-label="Waiting to join">
+                  {waiting.map((g) => (
+                    <li key={g.id}>
+                      <Avatar name={g.name} size={32} />
+                      <span className="rooms__waiting-who"><strong>{g.name}</strong><span>Opened the invite link</span></span>
+                      <Button size="sm" variant="primary" aria-label={`Accept ${g.name}`} onClick={() => decide(g, true)}>Accept</Button>
+                      <Button size="sm" variant="secondary" aria-label={`Decline ${g.name}`} onClick={() => decide(g, false)}>Decline</Button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {gated && <p className="rooms__waiting-note" role="status">{lastCall}</p>}
               <div className="rooms__controls">
                 {isJoined ? (
                   <>
@@ -207,8 +236,8 @@ export default function RoomsConcept() {
           ) : (
             <div className="rooms__quiet">
               <strong>Quiet right now.</strong>
-              <span>Start a huddle if a message needs a voice.</span>
-              <Button variant="primary" onClick={() => { setStarted((s) => new Set(s).add(channelId)); setJoined((s) => new Set(s).add(channelId)); }}>Start a huddle</Button>
+              <span>Need a voice for this? Pull up a chair.</span>
+              <Button variant="primary" onClick={() => { setStarted((s) => new Set(s).add(channelId)); setJoined((s) => new Set(s).add(channelId)); }}>Pull up a chair</Button>
             </div>
           )}
         </Card>

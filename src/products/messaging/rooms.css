@@ -45,7 +45,8 @@
 .rooms__room-head h2 { font-size: var(--ds-text-h2); }
 .rooms__stage { margin: 0 var(--ds-space-4); display: grid; gap: var(--ds-space-4); }
 .rooms__stage-top { display: flex; align-items: center; gap: var(--ds-space-3); flex-wrap: wrap; }
-.rooms__stage-top > span:last-child { margin-left: auto; font-size: var(--ds-text-caption); }
+.rooms__stage-top .rooms__listening { margin-left: auto; font-size: var(--ds-text-caption); }
+.rooms__room-share { margin-left: auto; }
 .rooms__speakers { list-style: none; margin: 0; padding: 0; display: flex; gap: var(--ds-space-5); flex-wrap: wrap; }
 .rooms__speakers li { display: grid; justify-items: center; gap: var(--ds-space-1); font-weight: 500; }
 .rooms__ring { display: inline-grid; padding: 4px; border-radius: 50%; }
@@ -57,3 +58,11 @@
 .rooms__quiet { display: grid; gap: var(--ds-space-2); justify-items: start; }
 .rooms__chat { flex: 1; min-height: 0; overflow: auto; padding: var(--ds-space-3) var(--ds-space-2); margin-top: var(--ds-space-2); }
 .rooms__compose { padding: var(--ds-space-2) var(--ds-space-4) var(--ds-space-4); }
+
+/* Waiting to join: people who opened the invite link, with Accept and Decline. */
+.rooms__waiting { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--ds-space-2); }
+.rooms__waiting li { display: flex; align-items: center; gap: var(--ds-space-3); flex-wrap: wrap; padding: var(--ds-space-2) var(--ds-space-3); border-radius: var(--ds-radius-lg); background: color-mix(in srgb, var(--ds-white) 60%, transparent); }
+.rooms__waiting-who { flex: 1; min-width: 140px; display: grid; line-height: 1.3; }
+.rooms__waiting-who span { font-size: var(--ds-text-caption); }
+.rooms__waiting-note { font-size: var(--ds-text-caption); min-height: 1em; margin: 0; }
+.rooms__waiting-note:empty { display: none; }

@@ -3,6 +3,7 @@ import { ArrowBendUpLeft, CaretDown, ChatsCircle, Hash, List as ListIcon, Magnif
 import { Avatar, Button, Card, FilterTag, Input, List, ListRow, Nav, Sheet, tintVar, type NavItem } from '../../design-system';
 import { PersonAvatar, bubbleTint } from './avatars';
 import { Composer } from './Composer';
+import { CopyLink, channelLink } from './CopyLink';
 import { MessageItem } from './MessageItem';
 import { ThreadPanel } from './ThreadPanel';
 import { dmChannels, dmMessages, personById, people, ME } from './data';
@@ -231,6 +232,7 @@ export default function CanvasConcept() {
           <header className="canvas__head">
             <h1><span className="ds-soft">{channel.name},</span><br />where the team talks it through.</h1>
             <p className="ds-muted">{channel.topic}</p>
+            <div><CopyLink variant="secondary" size="sm" label={`Copy link to #${channel.name}`} text="Copy channel link" url={channelLink(channel.name)} /></div>
           </header>
         )}
 

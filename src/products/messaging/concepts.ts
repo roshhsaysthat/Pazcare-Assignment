@@ -11,7 +11,7 @@ export const messagingConcepts = [
   },
   {
     id: 'rooms', letter: 'C', name: 'Rooms', reference: 'Clubhouse-style.', preferred: false,
-    idea: 'A unified inbox pulls mentions from every channel into one list, with live huddles one tap away.',
+    idea: 'A unified inbox pulls mentions from every channel into one list, with live rooms one tap away.',
     why: 'Strongest on triage and replying without leaving the inbox, and most mobile friendly. Text is demoted next to presence, which hurts when the work is mostly reading and writing.',
   },
 ] as const;

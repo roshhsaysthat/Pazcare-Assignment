@@ -55,3 +55,6 @@
 .dm-compose .composer__row:focus-within { box-shadow: 0 0 0 2px var(--ds-text); }
 /* Dark theme: a lighter touch so muted text keeps its contrast on the tint. */
 [data-ds-theme='dark'] .msg--bubble .msg__main, [data-ds-theme='dark'] .dm-compose .composer__row { background: color-mix(in srgb, var(--bubble) 14%, var(--ds-surface)); }
+
+.copylink { display: inline-flex; align-items: center; gap: var(--ds-space-2); flex-wrap: wrap; }
+.copylink__fail { font-size: var(--ds-text-caption); color: var(--ds-text-muted); user-select: all; overflow-wrap: anywhere; }
