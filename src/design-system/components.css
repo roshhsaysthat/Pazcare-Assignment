@@ -68,7 +68,7 @@ textarea.ds-input { height: auto; min-height: 80px; padding: var(--ds-space-3); 
 .ds-card--outline { background: var(--ds-surface); box-shadow: var(--ds-elev-2); }
 .ds-card--flat { background: var(--ds-surface-sunken); }
 .ds-card--inverse { background: var(--ds-primary-bg); color: var(--ds-primary-fg); }
-.ds-card--tint { color: var(--ds-tint-ink); background: linear-gradient(160deg, var(--tint), color-mix(in srgb, var(--tint) 55%, white)); }
+.ds-card--tint { color: var(--ds-tint-ink); background: linear-gradient(160deg, var(--tint), color-mix(in srgb, var(--tint) 55%, var(--ds-white))); }
 .ds-card--interactive { cursor: pointer; transition: box-shadow var(--ds-dur-base) var(--ds-ease), transform var(--ds-dur-base) var(--ds-ease); text-align: left; border: 0; width: 100%; }
 .ds-card--interactive:hover { box-shadow: var(--ds-elev-3); }
 

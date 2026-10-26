@@ -14,8 +14,8 @@
 .now__read .ds-meter progress::-webkit-progress-value { background: var(--ds-tint-ink); }
 .now__read .ds-meter progress::-moz-progress-bar { background: var(--ds-tint-ink); }
 .now__read .pagebar__meta, .now__read .ds-meter span { color: var(--ds-tint-ink); }
-.now__read .ds-btn--ghost:hover:not(:disabled) { background: rgb(255 255 255 / 0.5); }
-.now__read .ds-input { background: rgb(255 255 255 / 0.8); border-color: transparent; }
+.now__read .ds-btn--ghost:hover:not(:disabled) { background: color-mix(in srgb, var(--ds-white) 50%, transparent); }
+.now__read .ds-input { background: color-mix(in srgb, var(--ds-white) 80%, transparent); border-color: transparent; }
 @media (max-width: 639px) { .now__read { flex-direction: column; } .now__read .cover { width: 96px !important; } }
 .now__empty { display: grid; gap: var(--ds-space-4); }
 .now__picks li { display: flex; align-items: center; gap: var(--ds-space-3); }
@@ -26,7 +26,7 @@
 .now__rail { display: grid; gap: var(--ds-space-8); align-content: start; }
 @media (min-width: 900px) { .now__rail { position: sticky; top: calc(var(--shell-h, 0px) + var(--ds-space-6)); align-self: start; } }
 .now__challenge { display: grid; gap: var(--ds-space-3); }
-.now__challenge .ds-meter progress { background: rgb(255 255 255 / 0.18); }
+.now__challenge .ds-meter progress { background: color-mix(in srgb, var(--ds-primary-fg) 18%, transparent); }
 .now__challenge .ds-meter progress::-webkit-progress-value { background: var(--ds-primary-fg); }
 .now__challenge .ds-meter progress::-moz-progress-bar { background: var(--ds-primary-fg); }
 .now__on-dark { color: inherit; opacity: 0.75; margin: 0; }

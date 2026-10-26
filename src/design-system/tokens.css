@@ -28,6 +28,7 @@
   --ds-tint-butter: #f8d56e;
   --ds-tint-lilac: #c3b4f2;
   --ds-tint-ink: #000;
+  --ds-white: #fff; /* constant, does not flip in dark theme: tint cards always fade toward white */
 
   /* Role tokens: primary buttons and inverse cards flip in dark theme */
   --ds-primary-bg: var(--ds-text);
