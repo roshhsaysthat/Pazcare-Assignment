@@ -1,42 +1,36 @@
 import { useEffect, useState } from 'react';
 import { Info } from '@phosphor-icons/react';
 import { Button, Nav, Sheet, Tag } from './design-system';
-import RailConcept from './products/messaging/RailConcept';
-import CanvasConcept from './products/messaging/CanvasConcept';
-import RoomsConcept from './products/messaging/RoomsConcept';
-import { concepts } from './products/messaging/concepts';
+import { parseHash, products } from './products/registry';
 import './products/messaging/messaging.css';
 import './shell.css';
 
-type Id = (typeof concepts)[number]['id'];
-const views: Record<Id, () => JSX.Element> = { rail: RailConcept, canvas: CanvasConcept, rooms: RoomsConcept };
-const read = (): Id => (concepts.find((c) => `#/${c.id}` === location.hash)?.id ?? 'rail');
-
 export default function App() {
-  const [id, setId] = useState<Id>(read);
+  const [route, setRoute] = useState(() => parseHash(location.hash));
   const [info, setInfo] = useState(false);
-  useEffect(() => { const on = () => setId(read()); window.addEventListener('hashchange', on); return () => window.removeEventListener('hashchange', on); }, []);
-  const current = concepts.find((c) => c.id === id)!;
-  const View = views[id];
+  useEffect(() => { const on = () => setRoute(parseHash(location.hash)); window.addEventListener('hashchange', on); return () => window.removeEventListener('hashchange', on); }, []);
+
+  const { product, concept } = route;
+  const current = product.concepts.find((c) => c.id === concept)!;
+  const View = product.views[concept];
+  const go = (p: string, c: string) => { location.hash = `/${p}/${c}`; };
 
   return (
     <div className="shell">
       <header className="shell__bar">
-        <Nav
-          label="Concepts"
-          variant="pill"
-          current={id}
-          onSelect={(n) => { location.hash = `/${n}`; }}
-          items={concepts.map((c) => ({ id: c.id, label: c.name, icon: <span className="shell__letter" aria-hidden="true">{c.letter}</span> }))}
-        />
+        <Nav label="Products" variant="pill" current={product.id} onSelect={(id) => go(id, products.find((p) => p.id === id)!.concepts[0].id)} items={products.map((p) => ({ id: p.id, label: p.name, icon: p.icon }))} />
+        {product.concepts.length > 1 && (
+          <Nav label="Concepts" variant="pill" current={concept} onSelect={(c) => go(product.id, c)} items={product.concepts.map((c) => ({ id: c.id, label: c.name, icon: <span className="shell__letter" aria-hidden="true">{c.letter}</span> }))} />
+        )}
         <p className="shell__idea"><strong>{current.reference}</strong> {current.idea}</p>
         {current.preferred && <Tag tone="success" dot>Preferred</Tag>}
         <Button variant="secondary" size="sm" icon={<Info size="1.25em" />} onClick={() => setInfo(true)}>Compare</Button>
       </header>
-      <View key={id} />
-      <Sheet open={info} onClose={() => setInfo(false)} title="Team messaging: three concepts" side="right">
+      <View key={`${product.id}-${concept}`} />
+      <Sheet open={info} onClose={() => setInfo(false)} title={`${product.name}: concepts`} side="right">
+        <p className="shell__blurb ds-muted">{product.blurb}</p>
         <ul className="shell__compare">
-          {concepts.map((c) => (
+          {product.concepts.map((c) => (
             <li key={c.id}>
               <h3>{c.letter}. {c.name} {c.preferred && <Tag tone="success" dot>Preferred</Tag>}</h3>
               <p><strong>Core idea.</strong> {c.idea}</p>

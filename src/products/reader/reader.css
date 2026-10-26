@@ -1,5 +1,5 @@
 /* Shared reader styles. Tokens only. */
-.cover { aspect-ratio: 2 / 3; flex: none; display: flex; flex-direction: column; justify-content: space-between; padding: 9% 9% 8%; border-radius: 6px 10px 10px 6px; color: var(--ds-tint-ink); background: linear-gradient(160deg, var(--tint), color-mix(in srgb, var(--tint) 60%, white)); box-shadow: inset 4px 0 0 rgb(0 0 0 / 0.1), var(--ds-elev-1); overflow: hidden; }
+.cover { aspect-ratio: 2 / 3; flex: none; display: flex; flex-direction: column; justify-content: space-between; padding: calc(var(--cw, 96px) * 0.09) calc(var(--cw, 96px) * 0.09) calc(var(--cw, 96px) * 0.08) calc(var(--cw, 96px) * 0.13); border-radius: 6px 10px 10px 6px; color: var(--ds-tint-ink); background: linear-gradient(160deg, var(--tint), color-mix(in srgb, var(--tint) 60%, white)); box-shadow: inset 4px 0 0 rgb(0 0 0 / 0.1), var(--ds-elev-1); overflow: hidden; }
 .cover__title { font-family: var(--ds-font-display); font-weight: 500; letter-spacing: var(--ds-tracking-display); line-height: 1.02; overflow-wrap: anywhere; }
 .cover__author { opacity: 0.75; line-height: 1.2; }
 .stars { display: inline-flex; gap: 1px; color: var(--ds-text); vertical-align: middle; }

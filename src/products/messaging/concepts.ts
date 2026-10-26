@@ -1,4 +1,4 @@
-export const concepts = [
+export const messagingConcepts = [
   {
     id: 'rail', letter: 'A', name: 'Rail', reference: 'Discord-style.', preferred: true,
     idea: 'Channels, conversation, thread and composer all in view at once, driven from the keyboard.',

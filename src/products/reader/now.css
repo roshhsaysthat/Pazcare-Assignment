@@ -1,0 +1,36 @@
+/* Concept A: Now. Reading-first editorial column with a sticky challenge rail. */
+.now { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--ds-space-8); padding: var(--ds-space-6) var(--ds-space-4) var(--ds-space-24); max-width: 1120px; margin: 0 auto; align-content: start; }
+@media (min-width: 900px) { .now { grid-template-columns: minmax(0, 1fr) 320px; padding: var(--ds-space-10) var(--ds-space-6) var(--ds-space-24); } }
+.now__main { display: grid; gap: var(--ds-space-10); min-width: 0; align-content: start; }
+.now__head { display: grid; gap: var(--ds-space-4); }
+.now__bio { max-width: 52ch; font-size: var(--ds-text-body-lg); }
+.now__reads, .now__reviews, .now__picks { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--ds-space-4); }
+.now__read { display: flex; gap: var(--ds-space-5); align-items: stretch; }
+.now__read-body { flex: 1; min-width: 0; display: grid; gap: var(--ds-space-4); align-content: space-between; }
+.now__book { font-size: var(--ds-text-h2); }
+.now__form { display: flex; gap: var(--ds-space-2); align-items: flex-start; flex-wrap: wrap; }
+.now__form .ds-field { flex: 1; min-width: 140px; }
+.now__read .ds-meter progress { background: color-mix(in srgb, var(--ds-tint-ink) 14%, transparent); }
+.now__read .ds-meter progress::-webkit-progress-value { background: var(--ds-tint-ink); }
+.now__read .ds-meter progress::-moz-progress-bar { background: var(--ds-tint-ink); }
+.now__read .pagebar__meta, .now__read .ds-meter span { color: var(--ds-tint-ink); }
+.now__read .ds-btn--ghost:hover:not(:disabled) { background: rgb(255 255 255 / 0.5); }
+.now__read .ds-input { background: rgb(255 255 255 / 0.8); border-color: transparent; }
+@media (max-width: 639px) { .now__read { flex-direction: column; } .now__read .cover { width: 96px !important; } }
+.now__empty { display: grid; gap: var(--ds-space-4); }
+.now__picks li { display: flex; align-items: center; gap: var(--ds-space-3); }
+.now__picks li > span { flex: 1; }
+.now__review { display: flex; gap: var(--ds-space-4); padding-bottom: var(--ds-space-4); border-bottom: 1px solid var(--ds-border); }
+.now__review-top { display: flex; align-items: center; gap: var(--ds-space-2); flex-wrap: wrap; }
+.now__quote { max-width: 62ch; margin-top: var(--ds-space-1); }
+.now__rail { display: grid; gap: var(--ds-space-8); align-content: start; }
+@media (min-width: 900px) { .now__rail { position: sticky; top: calc(var(--shell-h, 0px) + var(--ds-space-6)); align-self: start; } }
+.now__challenge { display: grid; gap: var(--ds-space-3); }
+.now__challenge .ds-meter progress { background: rgb(255 255 255 / 0.18); }
+.now__challenge .ds-meter progress::-webkit-progress-value { background: var(--ds-primary-fg); }
+.now__challenge .ds-meter progress::-moz-progress-bar { background: var(--ds-primary-fg); }
+.now__on-dark { color: inherit; opacity: 0.75; margin: 0; }
+.now__big { font-family: var(--ds-font-display); font-weight: 500; letter-spacing: var(--ds-tracking-display); font-size: var(--ds-text-display); line-height: 1; }
+.now__big span { font-size: var(--ds-text-title); letter-spacing: 0; opacity: 0.75; margin-left: var(--ds-space-2); }
+.now__pace .ds-tag { background: var(--ds-primary-fg); }
+.now__rail .ds-list { background: var(--ds-surface); border-radius: var(--ds-radius-lg); box-shadow: var(--ds-elev-2); overflow: hidden; }
