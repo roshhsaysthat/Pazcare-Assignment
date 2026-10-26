@@ -108,7 +108,7 @@ export default function RailConcept() {
   const [newMsg, setNewMsg] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [favs, setFavs] = useState<Set<string>>(new Set(['lead-hiring', 'automation']));
-  const [call, setCall] = useState<null | 'audio' | 'video'>(null);
+  const [call, setCall] = useState<null | { kind: 'audio' | 'video'; id: string }>(null);
   const [cursor, setCursor] = useState(0);
   const composer = useRef<HTMLTextAreaElement>(null);
   const opened = useRef(false);
@@ -194,6 +194,8 @@ export default function RailConcept() {
     </div>
   );
 
+  const callChannel = call && channels.find((c) => c.id === call.id);
+  const callName = callChannel ? (callChannel.dm ? `with ${callChannel.name}` : `in #${callChannel.name}`) : '';
   const person = channel.dm ? personById(channel.dm) : null;
   const profile = person && (
     <div className="rail__profile">
@@ -248,24 +250,29 @@ export default function RailConcept() {
               </>
             )}
           </div>
+          <Button variant="ghost" iconOnly aria-label="Start audio call" icon={<Phone size="1.25em" />} onClick={() => setCall({ kind: 'audio', id: channelId })} />
+          <Button variant="ghost" iconOnly aria-label="Start video call" icon={<VideoCamera size="1.25em" />} onClick={() => setCall({ kind: 'video', id: channelId })} />
           <Button variant="ghost" iconOnly aria-label={favs.has(channelId) ? 'Remove from favorites' : 'Add to favorites'} aria-pressed={favs.has(channelId)} icon={<Star size="1.25em" weight={favs.has(channelId) ? 'fill' : 'regular'} />} onClick={() => toggleFav(channelId)} />
           {!channel.dm && <Button variant="ghost" iconOnly aria-label="Show members" aria-pressed={membersOpen && !openRoot} icon={<Users size="1.25em" />} onClick={() => { openThread(null); setMembersOpen((m) => !m); }} />}
         </header>
 
-        {channel.live && !channel.dm && (
+        {call && (
+          <div className="rail__huddle">
+            {call.kind === 'video' ? <VideoCamera size="1.25em" aria-hidden="true" /> : <Phone size="1.25em" aria-hidden="true" />}
+            <span><strong>In {call.kind} call</strong> <span className="ds-muted">{callName}</span></span>
+            <Button size="sm" variant="secondary" onClick={() => setCall(null)}>Leave meet</Button>
+          </div>
+        )}
+        {channel.live && !channel.dm && !call && (
           <div className="rail__huddle">
             <SpeakerHigh size="1.25em" aria-hidden="true" />
             <span><strong>{channel.live.title}</strong> <span className="ds-muted">{channel.live.listeners} listening</span></span>
             <span className="rail__stack">{channel.live.speakers.map((s) => <PersonAvatar key={s} name={personById(s).name} size={24} />)}</span>
-            {call ? (
-              <span className="rail__meet"><span>In {call} call</span><Button size="sm" variant="secondary" onClick={() => setCall(null)}>Leave meet</Button></span>
-            ) : (
-              <span className="rail__meet" role="group" aria-label="Join meet">
-                <span className="ds-muted">Join meet</span>
-                <Button size="sm" variant="secondary" icon={<Phone size="1.25em" />} onClick={() => setCall('audio')}>Audio call</Button>
-                <Button size="sm" variant="primary" icon={<VideoCamera size="1.25em" />} onClick={() => setCall('video')}>Video call</Button>
-              </span>
-            )}
+            <span className="rail__meet" role="group" aria-label="Join meet">
+              <span className="ds-muted">Join meet</span>
+              <Button size="sm" variant="secondary" icon={<Phone size="1.25em" />} onClick={() => setCall({ kind: 'audio', id: channelId })}>Audio call</Button>
+              <Button size="sm" variant="primary" icon={<VideoCamera size="1.25em" />} onClick={() => setCall({ kind: 'video', id: channelId })}>Video call</Button>
+            </span>
           </div>
         )}
 
@@ -313,7 +320,7 @@ export default function RailConcept() {
       <Sheet open={newMsg} onClose={() => setNewMsg(false)} title="New message">
         <NewMessageBody onPick={(id) => { setNewMsg(false); selectChannel(id); setTimeout(() => composer.current?.focus(), 0); }} />
       </Sheet>
-      <p className="ds-sr-only" aria-live="polite">{call ? `You joined the ${call} call` : ''}</p>
+      <p className="ds-sr-only" aria-live="polite">{call ? `You joined the ${call.kind} call` : ''}</p>
     </div>
   );
 }

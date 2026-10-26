@@ -38,7 +38,7 @@ Tint cards are vertical gradients from the tint to near white, so any single hex
 | Icon library | Phosphor regular | You said you believed it. The screenshots show small glyphs in dark chips and brand logos for the tech stack, but nothing that distinguishes Phosphor from, say, Lucide | Inspect an icon's SVG `viewBox` and path data, or look for `ph-` classes |
 | Signal colour | `#c2410c` | A text-safe darker relative of the observed red-orange. The measured hex was not captured | Eyedropper the signature |
 | Success, danger, info | `#15803d`, `#b91c1c`, `#0b6bcb` | The portfolio shows no status colours at all | Product decision, not a portfolio fact |
-| Dark theme | Entire palette | The portfolio has no dark mode. Product A's Rail concept leans on it | Needs a design decision from you |
+| Dark theme | Entire palette | The portfolio has no dark mode. Product A's Meetify concept leans on it | Needs a design decision from you |
 | Motion | 140, 220, 360ms with ease-out curves | Static screenshots show no motion | Watch the live site or inspect Framer's animation settings |
 | Spacing scale | 4px base | Standard practice, not measured | Inspect padding values |
 | Radius scale | 8, 12, 16, 24, pill | 24px is eyeballed from the cards. The rest are conventional | Inspect `border-radius` |

@@ -18,7 +18,7 @@ Layout, pane count, density, theme, illustration, content tone. The portfolio is
 
 | Job | Structure | Used in |
 |---|---|---|
-| Triage many items | Master-detail panes | Messaging: Rail |
+| Triage many items | Master-detail panes | Messaging: Meetify |
 | Read and reflect | One editorial column, about 65ch | Messaging: Canvas; Reader: Now |
 | Monitor numbers | Stat strip, one primary visual, a list | Reader: Year |
 | Browse a collection | Visual grid, filters, detail in a sheet | Reader: Shelves |

@@ -126,7 +126,7 @@ export const profiles: Record<string, { email: string; location: string; hours: 
   leo: { email: 'leo.park@northfield.design', location: 'New York', hours: '09:00 to 17:00', about: 'Hiring manager for the Design Lead role. Joins panels remotely.' },
 };
 
-/** Direct messages: one conversation per person, yourself first. Used by Rail. */
+/** Direct messages: one conversation per person, yourself first. Used by Meetify. */
 const dmTints: Tint[] = ['sky', 'peach', 'sage', 'lilac', 'butter', 'cream', 'ice'];
 export const dmChannels: Channel[] = people
   .filter((p) => !p.bot)

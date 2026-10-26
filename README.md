@@ -17,7 +17,7 @@ Needs Node 18+. No backend: all state is local React state and resets on reload.
 
 | Product | Concept | Core idea | Preferred? |
 |---|---|---|---|
-| **A. Team messaging** (hiring and design-automation team) | **Rail** (keyboard-driven) | Channels, thread and composer in view together, driven from the keyboard (Ctrl+K, j/k/t) | **Yes** |
+| **A. Team messaging** (hiring and design-automation team) | **Meetify** (keyboard-driven) | Channels, thread and composer in view together, driven from the keyboard (Ctrl+K, j/k/t) | **Yes** |
 | | **Canvas** (conversation-first) | Every post carries its thread inline, so replies are the main reading experience | |
 | | **Rooms** (unified inbox) | One inbox of mentions across all channels, reply in place, live huddles one tap away | |
 | **B. Reader profile** | **Now** (reading-first) | The book in your hands leads: update your page in two taps, challenge and shelves in a side rail | **Yes** |
@@ -25,20 +25,20 @@ Needs Node 18+. No backend: all state is local React state and resets on reload.
 | | **Shelves** (collection-first) | The library is the page: cover grid, filters, every book editable in a side sheet | |
 | **Skill test** | **Booking flow** | An appointment flow from an unfamiliar brief, built using only the skill | n/a |
 
-**Why Rail (A).** It is the only messaging concept showing channels, a thread and the composer together at desktop width, and the command menu and shortcuts serve the high-frequency scanning job. It depends on the dark theme, which is inferred (the portfolio has none), so Canvas is the safer on-brand alternative for async teams.
+**Why Meetify (A).** It is the only messaging concept showing channels, a thread and the composer together at desktop width, and the command menu and shortcuts serve the high-frequency scanning job. It depends on the dark theme, which is inferred (the portfolio has none), so Canvas is the safer on-brand alternative for async teams.
 
 **Why Now (B).** A reader opens their profile to log where they are, so the current book and the page counter lead. It keeps the portfolio's editorial feel without dashboard noise. Year answers "am I behind?" best, and Shelves is best for curating a big library, but each demotes the daily action.
 
 | | | |
 |---|---|---|
-| ![Rail](docs/screens/messaging-rail.png) | ![Canvas](docs/screens/messaging-canvas.png) | ![Rooms](docs/screens/messaging-rooms.png) |
+| ![Meetify](docs/screens/messaging-rail.png) | ![Canvas](docs/screens/messaging-canvas.png) | ![Rooms](docs/screens/messaging-rooms.png) |
 | ![Now](docs/screens/reader-now.png) | ![Year](docs/screens/reader-year.png) | ![Shelves](docs/screens/reader-shelves.png) |
 
 ## Structure
 
 ```
 src/design-system/        tokens.css, components.css, 10 components (Button, Input, Card, Tag, Nav, List, Sheet, Avatar, Banner, Meter)
-src/products/messaging/   Rail, Canvas, Rooms + shared composer, message, thread, workspace state
+src/products/messaging/   Meetify, Canvas, Rooms + shared composer, message, thread, workspace state
 src/products/reader/      Now, Year, Shelves + shared data, derived stats, cover and rating components
 src/products/booking/     skill-test product
 src/products/registry.tsx product and concept registry, hash routing
@@ -71,11 +71,11 @@ mkdir -p .claude/skills && cp -r skills/roshyoui-design-system .claude/skills/
 
 | Suite | Checks | axe scans | Covers |
 |---|---|---|---|
-| messaging | 41 | 3 | default view shows channels, conversation, thread and composer; Favorites, Channels and Direct messages sections, favoriting, new message, DMs, meet (audio or video call), send, @mention picker, command menu, shortcuts, thread reply, filters, inbox reply, Done and Undo, huddle, mobile menus |
+| messaging | 50 | 3 | default view shows channels, conversation, thread and composer; Favorites, Channels and Direct messages sections, favoriting, new message, DMs, meet (audio or video call), send, @mention picker, command menu, shortcuts, thread reply, filters, inbox reply, Done and Undo, huddle, mobile menus |
 | reader | 24 | 5 | page logging and validation, finishing a book, empty state, chart and month filter, shelf filters and sort, side sheet edits |
 | booking | 18 | 4 | step gating, focus management, validation, back keeps data, confirmation, mobile summary |
 
-All 83 checks pass and axe reports zero WCAG 2 A/AA violations in the scanned states. Layouts were also checked at 390, 768 and 1280px for horizontal overflow. **Not tested:** screen readers, real touch devices, Safari, Firefox; and axe was run on default and sheet-open states, not every state.
+All 92 checks pass and axe reports zero WCAG 2 A/AA violations in the scanned states. Layouts were also checked at 390, 768 and 1280px for horizontal overflow. **Not tested:** screen readers, real touch devices, Safari, Firefox; and axe was run on default and sheet-open states, not every state.
 
 ## Skill validation
 
@@ -92,7 +92,7 @@ Summary (full report in `docs/validation.md`): the skill carried the system to a
 
 ## Known limitations
 
-- Some UI is mocked: Rail's direct messages are seeded with a few lines and have no calls, Canvas's Files and People tabs are light, and huddles have no audio. On Rail at widths under 1200px the thread opens in a side sheet instead of being visible by default. The booking flow stores nothing and says so on screen.
+- Some UI is mocked: Meetify's direct messages are seeded with a few lines and have no real replies, calls are simulated with no audio or video, Canvas's Files and People tabs are light, and huddles have no audio. On Meetify at widths under 1200px the thread opens in a side sheet instead of being visible by default. The booking flow stores nothing and says so on screen.
 - Message formatting supports bold, code and mentions only.
 - The skill test was not independent (above).
-- Dark theme contrast was scanned in Rail's default view only.
+- Dark theme contrast was scanned in Meetify's default view only.

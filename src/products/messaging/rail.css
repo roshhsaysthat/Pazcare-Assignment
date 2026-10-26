@@ -1,4 +1,4 @@
-/* Concept A: Rail. Four panes, dark theme (inferred tokens), keyboard-driven. */
+/* Concept A: Meetify. Four panes, dark theme (inferred tokens), keyboard-driven. */
 .rail { height: calc(100dvh - var(--shell-h, 0px)); display: grid; grid-template-columns: minmax(0, 1fr); background: var(--ds-bg); color: var(--ds-text); }
 .rail[data-mid='true'] { grid-template-columns: 272px minmax(0, 1fr); }
 .rail[data-wide='true'] { grid-template-columns: 272px minmax(0, 1fr) 360px; }

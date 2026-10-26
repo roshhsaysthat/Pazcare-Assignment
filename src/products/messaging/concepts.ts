@@ -1,6 +1,6 @@
 export const messagingConcepts = [
   {
-    id: 'rail', letter: 'A', name: 'Rail', reference: 'Discord-style.', preferred: true,
+    id: 'rail', letter: 'A', name: 'Meetify', reference: 'Discord-style.', preferred: true,
     idea: 'Channels, conversation, thread and composer all in view at once, driven from the keyboard.',
     why: 'Preferred. It is the only concept that shows channels, a thread and the composer together at desktop width, and the Ctrl K palette plus j/k/t keys serve the high-frequency scanning job. Caveat: it relies on the inferred dark theme.',
   },
