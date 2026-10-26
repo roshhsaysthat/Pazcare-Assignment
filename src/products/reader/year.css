@@ -1,0 +1,40 @@
+/* Concept B: Year. Numbers first: stat strip, one primary chart, then the list. */
+.year { display: grid; gap: var(--ds-space-6); padding: var(--ds-space-6) var(--ds-space-4) var(--ds-space-24); max-width: 1200px; margin: 0 auto; align-content: start; }
+@media (min-width: 900px) { .year { padding: var(--ds-space-8) var(--ds-space-6) var(--ds-space-24); } }
+.year__head { display: grid; gap: var(--ds-space-4); }
+.year__stats { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-block: 1px solid var(--ds-border); }
+@media (min-width: 900px) { .year__stats { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.stat { padding: var(--ds-space-4) var(--ds-space-4) var(--ds-space-4) 0; display: grid; gap: var(--ds-space-1); align-content: start; }
+.stat + .stat { padding-left: var(--ds-space-4); }
+@media (min-width: 900px) { .stat + .stat { border-left: 1px solid var(--ds-border); } }
+@media (max-width: 899px) { .stat:nth-child(odd) { padding-left: 0; } .stat:nth-child(n+3) { border-top: 1px solid var(--ds-border); } .stat:nth-child(even) { border-left: 1px solid var(--ds-border); } }
+.stat { min-width: 0; }
+.stat dd { margin: 0; }
+.stat__sub { display: grid; gap: var(--ds-space-1); justify-items: start; }
+.stat__note { font-size: var(--ds-text-caption); color: var(--ds-text-muted); }
+.stat__label { font-size: var(--ds-text-caption); color: var(--ds-text-muted); font-weight: 500; }
+.stat__value { font-family: var(--ds-font-display); font-weight: 500; letter-spacing: var(--ds-tracking-display); font-size: var(--ds-text-h1); line-height: 1; }
+.stat__sub { font-size: var(--ds-text-caption); color: var(--ds-text-muted); }
+.year__grid { display: grid; gap: var(--ds-space-6); grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 900px) { .year__grid { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); align-items: start; } .year__chart { grid-column: 1; } .year__genres { grid-column: 2; } .year__finished { grid-column: 1; } .year__side { grid-column: 2; } }
+.year__h2 { font-size: var(--ds-text-title); }
+.year__chart-head, .year__fin-head { display: flex; align-items: center; justify-content: space-between; gap: var(--ds-space-3); flex-wrap: wrap; margin-bottom: var(--ds-space-3); }
+.year__toggle { display: flex; gap: var(--ds-space-2); }
+.yc svg { display: block; max-width: 100%; }
+.yc__tick { font-size: 12px; fill: var(--ds-text-muted); font-family: var(--ds-font-body); }
+.yc__tick[data-now] { fill: var(--ds-text); font-weight: 600; }
+.yc__label { font-size: 12px; font-weight: 500; fill: var(--ds-text); font-family: var(--ds-font-body); }
+.yc__label--soft { fill: var(--ds-text-muted); }
+.year__genre-list, .year__now, .year__shelves { list-style: none; margin: var(--ds-space-3) 0 0; padding: 0; display: grid; gap: var(--ds-space-3); }
+.year__genre-list li { display: grid; gap: var(--ds-space-1); }
+.year__now-title { font-weight: 500; }
+.year__now li { display: grid; gap: var(--ds-space-1); }
+.year__shelves { display: flex; flex-wrap: wrap; gap: var(--ds-space-2); }
+.year__side { display: grid; gap: var(--ds-space-6); }
+.year__finished .ds-list { background: var(--ds-surface); border-radius: var(--ds-radius-lg); box-shadow: var(--ds-elev-2); overflow: hidden; }
+.year__select { display: inline-flex; align-items: center; gap: var(--ds-space-2); }
+.year__select select { width: auto; padding-right: var(--ds-space-2); }
+.year__empty { padding: var(--ds-space-8) 0; text-align: center; }
+.year__on-tint { color: inherit; opacity: 0.75; }
+.year__quote { font-family: var(--ds-font-display); font-size: var(--ds-text-title); letter-spacing: -0.02em; line-height: 1.25; margin-bottom: var(--ds-space-3); }
+@media (max-width: 639px) { .year__finished .ds-row__meta { display: none; } }

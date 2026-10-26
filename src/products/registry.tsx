@@ -5,6 +5,7 @@ import CanvasConcept from './messaging/CanvasConcept';
 import RoomsConcept from './messaging/RoomsConcept';
 import { messagingConcepts } from './messaging/concepts';
 import NowConcept from './reader/NowConcept';
+import YearConcept from './reader/YearConcept';
 import { readerConcepts } from './reader/concepts';
 
 type Meta = { id: string; letter: string; name: string; reference: string; preferred: boolean; idea: string; why: string };
@@ -19,7 +20,7 @@ export const products: ProductDef[] = [
   {
     id: 'reader', name: 'Reader profile', icon: <BookOpen size="1.25em" aria-hidden="true" />,
     blurb: 'A Goodreads-style profile: current reads, shelves, yearly challenge and reviews.',
-    concepts: readerConcepts, views: { now: NowConcept },
+    concepts: readerConcepts, views: { now: NowConcept, year: YearConcept },
   },
 ];
 
