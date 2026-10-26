@@ -1,66 +1,98 @@
-# Pazcare Design assignment
+# Pazcare design assignment
 
-Roshyoui design system, applied to products it has never seen. Status: **Product A (team messaging) is complete.** Reader profile (Product B), the packaged skill and the unfamiliar-brief test are not built yet.
+A reusable design system and Claude Code skill extracted from a UX portfolio, applied to two products it had never seen (a team messaging app and a Goodreads-style reader profile), plus a third unfamiliar brief to test the skill. Built with React, TypeScript and Vite, using Claude Code.
 
 ## Run it
 
 ```bash
 npm install
-npm run dev        # http://localhost:5173, switch concepts with the bar at the top (#/rail, #/canvas, #/rooms)
-npm run build      # typecheck + production build
-npm run preview    # serve the build on :4173
+npm run dev          # http://localhost:5173
+npm run build        # type-check + production build
+npm run test:e2e     # builds, serves, runs all browser checks (see Testing)
 ```
 
-Needs Node 18+. No backend: messages, threads and unread counts live in React state and reset on reload.
+Needs Node 18+. No backend: all state is local React state and resets on reload. Open any layout directly: `#/messaging/rail`, `#/reader/now`, `#/booking/flow`. The bar at the top switches product and concept; **Compare** shows each concept's core idea and why it is or is not preferred.
+
+## The layouts
+
+| Product | Concept | Core idea | Preferred? |
+|---|---|---|---|
+| **A. Team messaging** (hiring and design-automation team) | **Rail** (keyboard-driven) | Channels, thread and composer in view together, driven from the keyboard (Ctrl+K, j/k/t) | **Yes** |
+| | **Canvas** (conversation-first) | Every post carries its thread inline, so replies are the main reading experience | |
+| | **Rooms** (unified inbox) | One inbox of mentions across all channels, reply in place, live huddles one tap away | |
+| **B. Reader profile** | **Now** (reading-first) | The book in your hands leads: update your page in two taps, challenge and shelves in a side rail | **Yes** |
+| | **Year** (stats-first) | A stat strip, one chart of progress against the goal, then what you read | |
+| | **Shelves** (collection-first) | The library is the page: cover grid, filters, every book editable in a side sheet | |
+| **Skill test** | **Booking flow** | An appointment flow from an unfamiliar brief, built using only the skill | n/a |
+
+**Why Rail (A).** It is the only messaging concept showing channels, a thread and the composer together at desktop width, and the command menu and shortcuts serve the high-frequency scanning job. It depends on the dark theme, which is inferred (the portfolio has none), so Canvas is the safer on-brand alternative for async teams.
+
+**Why Now (B).** A reader opens their profile to log where they are, so the current book and the page counter lead. It keeps the portfolio's editorial feel without dashboard noise. Year answers "am I behind?" best, and Shelves is best for curating a big library, but each demotes the daily action.
+
+| | | |
+|---|---|---|
+| ![Rail](docs/screens/messaging-rail.png) | ![Canvas](docs/screens/messaging-canvas.png) | ![Rooms](docs/screens/messaging-rooms.png) |
+| ![Now](docs/screens/reader-now.png) | ![Year](docs/screens/reader-year.png) | ![Shelves](docs/screens/reader-shelves.png) |
 
 ## Structure
 
 ```
-src/design-system/        tokens.css, components.css, 10 components, tints.ts
-src/products/messaging/   three concepts + shared pieces (Composer, MessageItem, ThreadPanel, workspace state)
-src/App.tsx, shell.css    demo shell (concept switcher, Compare sheet). Not part of the products.
+src/design-system/        tokens.css, components.css, 10 components (Button, Input, Card, Tag, Nav, List, Sheet, Avatar, Banner, Meter)
+src/products/messaging/   Rail, Canvas, Rooms + shared composer, message, thread, workspace state
+src/products/reader/      Now, Year, Shelves + shared data, derived stats, cover and rating components
+src/products/booking/     skill-test product
+src/products/registry.tsx product and concept registry, hash routing
+skills/roshyoui-design-system/   SKILL.md + references/
+docs/                     provenance.md, principles.md, components.md, validation.md, screens/
+tests/                    e2e/*.py and run.sh
 ```
 
-## Product A: team messaging (Slack alternative), hiring and design-automation team content
+## Design system
 
-| | Concept | Core idea | Lens from the brief |
+Tokens (colour, type scale, spacing, radius, elevation, motion) live in `src/design-system/tokens.css`. Documentation:
+
+- `docs/principles.md`: the visual identity, responsive rules and accessibility rules.
+- `docs/components.md`: each component's behaviour, and the decision taken for every gap the portfolio does not define.
+- `docs/provenance.md`: **what is measured and what is inferred.**
+
+**Provenance in one paragraph.** The live portfolio could not be fetched from the build environment, so nothing comes from its source. Colours were **measured from the two supplied screenshots**: canvas `#fafafa` and ink `#000000` exactly, card tints within a few units. Font families (Inter Tight and Inter), **Phosphor icons**, all motion values, the dark theme and status colours are **inferred and unverified**, and `docs/provenance.md` says how to verify each. The Phosphor assumption in particular is not confirmed.
+
+## The skill
+
+`skills/roshyoui-design-system/SKILL.md` plus `references/` (structure by job, the gap ladder, a verification checklist, and lessons from bugs found while building). To use it in Claude Code, copy or symlink the folder into `.claude/skills/`:
+
+```bash
+mkdir -p .claude/skills && cp -r skills/roshyoui-design-system .claude/skills/
+```
+
+## Testing
+
+`npm run test:e2e` builds the app, serves it, and runs three Playwright suites (Chromium) with axe-core accessibility scans, then stops the server. One-time setup: `pip install playwright` and `python3 -m playwright install chromium`.
+
+| Suite | Checks | axe scans | Covers |
 |---|---|---|---|
-| A | **Rail** (Discord-style, dark) | Channels, conversation, thread and composer visible at once, driven from the keyboard | Keyboard-driven |
-| B | **Canvas** (Teams-style, light) | Every post carries its thread inline, so replies are the main reading experience | Conversation-first |
-| C | **Rooms** (Clubhouse-style, light) | One inbox of mentions across all channels, reply in place, live huddles one tap away | Unified inbox |
+| messaging | 24 | 3 | send, @mention picker, command menu, shortcuts, thread open and reply, filters, inbox reply, Done and Undo, huddle, mobile menus |
+| reader | 24 | 5 | page logging and validation, finishing a book, empty state, chart and month filter, shelf filters and sort, side sheet edits |
+| booking | 18 | 4 | step gating, focus management, validation, back keeps data, confirmation, mobile summary |
 
-**Preferred: A (Rail).** It is the only concept that shows channels, a thread and the composer together at desktop width, and Ctrl+K plus j/k/t serve the high-frequency scanning job. Caveat: it depends on the inferred dark theme. B is the safer on-brand alternative for async teams.
+All 66 checks pass and axe reports zero WCAG 2 A/AA violations in the scanned states. Layouts were also checked at 390, 768 and 1280px for horizontal overflow. **Not tested:** screen readers, real touch devices, Safari, Firefox; and axe was run on default and sheet-open states, not every state.
 
-Keyboard in Rail: `Ctrl/Cmd K` command menu, `Alt ↑/↓` switch channel, `/` focus composer, `j`/`k` move between messages, `t` open thread, `Esc` close, `Shift R` mark read, `Shift D` toggle theme.
+## Skill validation
 
-Note on scope: the chat direction asked for Discord, Teams and Clubhouse references. The assignment brief lists conversation-first, unified inbox and keyboard-driven. Each concept is built to satisfy one of those lenses too (table above), so both readings hold.
+Summary (full report in `docs/validation.md`): the skill carried the system to a stepwise booking flow with almost no new components, because the gap ladder resolved most needs at rung 1 or 2. It also exposed gaps: no multi-step focus guidance (now added to the skill), no disabled filter chip (added to the system), and no shared radio or select styling (a clear next promotion). **Limit:** the same agent wrote and applied the skill, so this is not an independent test. Running a fresh agent on a second brief is the recommended next step.
 
-## Design system decisions
+## Technical decisions worth knowing
 
-Observed from the two portfolio screenshots: off-white canvas, ink black, pastel tints, pill buttons, 16 to 24px radii, two-tone headings, hairline separation.
-**Inferred, not verified against the live site:** Inter Tight and Inter, Phosphor regular icons, every motion value, the dark theme.
-
-Gaps and the decision taken (skill ladder rung in brackets):
-
-- **Composer** with formatting, attach, send. Product component built from Button, tokens only (3). Shared by all three concepts via a `variant` prop.
-- **@mention picker.** Native `<textarea>` as an ARIA combobox plus listbox (3).
-- **Command menu.** `Sheet` + `Input` + listbox (1 to 3). No new system component.
-- **Message, thread panel, huddle stage.** Product components (3). Candidate score uses the system `Meter`.
-- **Toasts.** None in the system, so notices are `Banner` with `role="status"` and Undo (1).
-- **Dialog autofocus.** React `autoFocus` fires before `<dialog>` opens, so `Sheet` now focuses any `[data-autofocus]` child after `showModal()`. A system fix, found by testing (4).
-- **Pill `Nav` hides labels under 640px**, so its items must have icons. The demo switcher hit this and now uses letter badges. Document this in the skill.
-
-## Verification actually run
-
-- `tsc --noEmit` and `vite build`: pass.
-- Playwright, Chromium, 24 interaction checks (send, mention picker, command menu, shortcuts, thread open and reply, filters, inline reply from inbox, Done and Undo, huddle join, mobile menus and back): all pass.
-- axe-core WCAG 2 A/AA on each concept at 1280px: 0 violations. Only the default state was scanned, not every sheet and state.
-- Horizontal overflow at 390, 768, 1280px: none. Screenshots reviewed by eye at those widths.
-- Not done: screen reader testing, real touch devices, Safari and Firefox.
+- **Native elements first.** `<dialog>` for sheets, `<progress>` for meters, `<select>`, radio groups and `<details>` for the rest, so keyboard and screen reader behaviour comes free. Product CSS only styles them.
+- **One source of truth for numbers.** Reader stats are one pure function of the book list, so the stat strip, chart and challenge card cannot disagree.
+- **A fixed demo clock** (`2026-10-26`) keeps "behind pace" maths repeatable.
+- **Hand-built SVG chart** sized to its container, with a hidden data table, instead of a chart library for a single chart.
+- **No real cover art, no real avatars.** Covers are generated typography on tints. All people, books' reviews and the clinic are fictional.
+- **Hash routing** (`#/product/concept`), so every layout has a shareable link and there is no router dependency.
 
 ## Known limitations
 
-- Workspace switcher in Rail and the Files and People tabs in Canvas are light mocks. Workspaces do not change content.
-- Message formatting supports `**bold**`, `` `code` `` and `@mentions` only. Italic is not parsed even though the brief might expect it.
-- Huddles are visual only. No audio.
-- Dark theme contrast was checked by axe in Rail's default view only.
+- Some UI is mocked: Rail's workspace switcher, Canvas's Files and People tabs, huddle audio. The booking flow stores nothing and says so on screen.
+- Message formatting supports bold, code and mentions only.
+- The skill test was not independent (above).
+- Dark theme contrast was scanned in Rail's default view only.
