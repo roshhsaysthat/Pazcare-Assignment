@@ -32,9 +32,12 @@ export const products: ProductDef[] = [
   },
 ];
 
-/** Parse #/product/concept. Old #/concept links still resolve to messaging. */
+/**
+ * Parse a location hash into a product and concept. Accepts #/product/concept, #product-concept
+ * (a plain token, which is what embedded viewers can forward) and the old #/concept form.
+ */
 export function parseHash(hash: string): { product: ProductDef; concept: string } {
-  const parts = hash.replace(/^#\/?/, '').split('/').filter(Boolean);
+  const parts = hash.replace(/^#\/?/, '').split(/[/-]/).filter(Boolean);
   const byId = products.find((p) => p.id === parts[0]);
   const product = byId ?? products[0];
   const conceptId = byId ? parts[1] : parts[0];

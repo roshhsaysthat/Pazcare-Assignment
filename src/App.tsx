@@ -13,7 +13,11 @@ export default function App() {
   const { product, concept } = route;
   const current = product.concepts.find((c) => c.id === concept)!;
   const View = product.views[concept];
-  const go = (p: string, c: string) => { location.hash = `/${p}/${c}`; };
+  // Set state directly, then mirror to the hash. Some embedded viewers do not deliver hash changes back to the page.
+  const go = (p: string, c: string) => {
+    setRoute(parseHash(`#/${p}/${c}`));
+    try { location.hash = `/${p}/${c}`; } catch { /* hash is only a convenience */ }
+  };
 
   return (
     <div className="shell">

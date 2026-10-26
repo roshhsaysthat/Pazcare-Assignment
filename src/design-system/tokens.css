@@ -81,7 +81,7 @@
 }
 
 /* Dark theme: INFERRED values, taken from the skill's dark spec. */
-[data-theme='dark'] {
+[data-ds-theme='dark'] {
   color-scheme: dark;
   --ds-bg: #0b111c;
   --ds-surface: #121a28;

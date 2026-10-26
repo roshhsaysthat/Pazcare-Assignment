@@ -142,7 +142,7 @@ export default function RailConcept() {
   const rightBody = openRoot ? threadView : members;
 
   return (
-    <div className="rail" data-theme={theme} data-wide={wide} data-mid={mid}>
+    <div className="rail" data-ds-theme={theme} data-wide={wide} data-mid={mid}>
       {mid && (
         <div className="rail__ws">
           <Nav

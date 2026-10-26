@@ -114,7 +114,7 @@ button.ds-tag:disabled { cursor: not-allowed; color: var(--ds-text-muted); backg
 .ds-nav__item[aria-current='page'] { background: var(--ds-primary-bg); color: var(--ds-primary-fg); }
 .ds-nav__label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ds-nav__badge { min-width: 20px; height: 20px; padding: 0 6px; border-radius: var(--ds-radius-pill); font-size: var(--ds-text-caption); display: inline-grid; place-items: center; background: var(--ds-signal); color: var(--ds-surface); }
-[data-theme='dark'] .ds-nav__badge { color: var(--ds-bg); }
+[data-ds-theme='dark'] .ds-nav__badge { color: var(--ds-bg); }
 @media (pointer: coarse) { .ds-nav__item { min-height: 44px; } }
 @media (max-width: 639px) { .ds-nav--pill .ds-nav__label { display: none; } }
 
