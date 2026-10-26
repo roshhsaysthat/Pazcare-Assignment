@@ -1,28 +1,20 @@
 /* Concept A: Rail. Four panes, dark theme (inferred tokens), keyboard-driven. */
 .rail { height: calc(100dvh - var(--shell-h, 0px)); display: grid; grid-template-columns: minmax(0, 1fr); background: var(--ds-bg); color: var(--ds-text); }
-.rail[data-mid='true'] { grid-template-columns: 72px 272px minmax(0, 1fr); }
-.rail[data-wide='true'] { grid-template-columns: 72px 272px minmax(0, 1fr) 360px; }
+.rail[data-mid='true'] { grid-template-columns: 272px minmax(0, 1fr); }
+.rail[data-wide='true'] { grid-template-columns: 272px minmax(0, 1fr) 360px; }
 .rail kbd { font-family: var(--ds-font-mono); font-size: 11px; padding: 1px 6px; border-radius: 6px; background: var(--ds-surface-sunken); box-shadow: var(--ds-elev-1); margin: 0 1px; }
-
-.rail__ws { background: var(--ds-surface-sunken); display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: var(--ds-space-3) var(--ds-space-2); box-shadow: 1px 0 0 var(--ds-border); }
-.rail__ws .ds-nav__item { min-height: 48px; width: 48px; padding: 0; justify-content: center; border-radius: var(--ds-radius-lg); }
-.rail__ws .ds-nav ul { gap: var(--ds-space-2); }
-/* Selected workspace: a framed tile, not a solid ink block. */
-.rail__ws .ds-nav__item[aria-current='page'] { background: var(--ds-surface); color: var(--ds-text); box-shadow: 0 0 0 2px var(--ds-text); }
-.rail__ws .ds-nav__item[aria-current='page']:hover { background: var(--ds-surface); }
-.rail[data-demo] { grid-template-columns: 72px minmax(0, 1fr) !important; }
-@media (max-width: 899px) { .rail[data-demo] { grid-template-columns: minmax(0, 1fr) !important; } }
-.rail__empty { display: grid; place-content: center; justify-items: center; gap: var(--ds-space-4); text-align: center; padding: var(--ds-space-6); }
-.rail__empty p { max-width: 44ch; }
 
 .rail__channels { background: var(--ds-surface); box-shadow: 1px 0 0 var(--ds-border); min-height: 0; }
 .rail__channels-inner { display: flex; flex-direction: column; height: 100%; min-height: 0; }
 .rail__brand { padding: var(--ds-space-4); display: grid; gap: var(--ds-space-3); }
 .rail__brand h2 { font-size: var(--ds-text-h2); }
 .rail__brand .ds-btn { justify-content: space-between; }
+.rail__brand-row { display: flex; gap: var(--ds-space-2); }
+.rail__brand-row > .ds-btn:first-child { flex: 1; }
+.rail__brand-row > .ds-btn[aria-label] { flex: none; }
 .rail__scroll { flex: 1; overflow: auto; padding: 0 var(--ds-space-2) var(--ds-space-3); }
 .rail__me { display: flex; align-items: center; gap: var(--ds-space-3); padding: var(--ds-space-3) var(--ds-space-4); border-top: 1px solid var(--ds-border); }
-.rail__me div { display: grid; line-height: 1.3; }
+.rail__me div { display: grid; line-height: 1.3; flex: 1; min-width: 0; }
 
 .rail__main { display: flex; flex-direction: column; min-width: 0; min-height: 0; height: calc(100dvh - var(--shell-h, 0px)); }
 .rail__top { display: flex; align-items: center; gap: var(--ds-space-3); padding: var(--ds-space-4) var(--ds-space-5); border-bottom: 1px solid var(--ds-border); }
@@ -31,6 +23,7 @@
 .rail__title p { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .rail__huddle { display: flex; align-items: center; gap: var(--ds-space-3); margin: var(--ds-space-3) var(--ds-space-5) 0; padding: var(--ds-space-2) var(--ds-space-3) var(--ds-space-2) var(--ds-space-4); border-radius: var(--ds-radius-pill); background: var(--ds-surface); box-shadow: var(--ds-elev-1); flex-wrap: wrap; }
 .rail__huddle > span:nth-child(2) { flex: 1; min-width: 160px; }
+.rail__meet { display: inline-flex; align-items: center; gap: var(--ds-space-2); flex-wrap: wrap; }
 .rail__stack { display: inline-flex; }
 .rail__stack > * + * { margin-left: -8px; }
 .rail__feed { flex: 1; overflow: auto; padding: var(--ds-space-3) var(--ds-space-3); }

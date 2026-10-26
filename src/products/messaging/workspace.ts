@@ -6,16 +6,16 @@ let uid = 0;
 const mk = (body: string, files?: string[]): Message => ({ id: `new-${++uid}`, author: ME, time: nowLabel(), body, files: files?.length ? files : undefined });
 
 /** Local workspace state shared by all three concepts: channels, messages, threads. No backend. */
-export function useWorkspace(initialChannel = 'automation') {
-  const [messages, setMessages] = useState(initialMessages);
+export function useWorkspace(initialChannel = 'automation', extra?: { channels: Channel[]; messages: Record<string, Message[]> }) {
+  const [messages, setMessages] = useState({ ...initialMessages, ...extra?.messages });
   const [threads, setThreads] = useState<Thread[]>(initialThreads);
   const [channelId, setChannelId] = useState(initialChannel);
   const [openRoot, setOpenRoot] = useState<string | null>(null);
   const [read, setRead] = useState<Set<string>>(new Set());
 
   const channels: Channel[] = useMemo(
-    () => baseChannels.map((c) => (read.has(c.id) ? { ...c, unread: 0, mentions: 0 } : c)),
-    [read],
+    () => [...baseChannels, ...(extra?.channels ?? [])].map((c) => (read.has(c.id) ? { ...c, unread: 0, mentions: 0 } : c)),
+    [read, extra],
   );
   const channel = channels.find((c) => c.id === channelId)!;
 

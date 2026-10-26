@@ -6,6 +6,8 @@ export type Channel = {
   name: string;
   topic: string;
   group: 'Hiring' | 'Tools' | 'Team';
+  /** Set on direct messages only: the other person's id. */
+  dm?: string;
   tint: Tint;
   unread?: number;
   mentions?: number;
@@ -113,3 +115,18 @@ export const commands = [
   { id: 'mark-read', label: 'Mark channel as read', hint: 'Shift+R' },
   { id: 'toggle-theme', label: 'Toggle dark theme', hint: 'Shift+D' },
 ];
+
+/** Direct messages: one conversation per person, yourself first. Used by Rail. */
+const dmTints: Tint[] = ['sky', 'peach', 'sage', 'lilac', 'butter', 'cream', 'ice'];
+export const dmChannels: Channel[] = people
+  .filter((p) => !p.bot)
+  .sort((a, b) => (a.id === ME ? -1 : b.id === ME ? 1 : 0))
+  .map((p, i) => ({
+    id: `dm-${p.id}`, name: p.id === ME ? `${p.name} (you)` : p.name, topic: p.role, group: 'Team' as const, tint: dmTints[i % dmTints.length], dm: p.id,
+    unread: p.id === 'mira' || p.id === 'anika' ? 1 : 0,
+  }));
+export const dmMessages: Record<string, Message[]> = {
+  'dm-jules': [{ id: 'dm-j1', author: 'jules', time: 'Mon', body: 'Note to self: pilot criteria draft, keep scorecards human.' }],
+  'dm-mira': [{ id: 'dm-m1', author: 'mira', time: '09:50', body: 'Can you keep the pilot criteria to one page? Leo will read it on his phone.' }],
+  'dm-anika': [{ id: 'dm-a1', author: 'anika', time: '09:35', body: 'Thursday panel is confirmed. Want the portfolio link in the invite?' }],
+};

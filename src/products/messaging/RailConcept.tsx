@@ -1,13 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Hash, List as ListIcon, MagnifyingGlass, Moon, SpeakerHigh, Sun, Users, X } from '@phosphor-icons/react';
+import { Hash, List as ListIcon, MagnifyingGlass, Moon, NotePencil, Phone, SpeakerHigh, Star, Sun, Users, VideoCamera, X } from '@phosphor-icons/react';
 import { Avatar, Button, Input, List, ListRow, Nav, Sheet, type NavItem } from '../../design-system';
 import { Composer } from './Composer';
 import { MessageItem } from './MessageItem';
 import { ThreadPanel } from './ThreadPanel';
-import { people, personById } from './data';
+import { dmChannels, dmMessages, people, personById, ME } from './data';
 import { useMedia } from './useMedia';
 import { useWorkspace } from './workspace';
 import './rail.css';
+
+const dmSeed = { channels: dmChannels, messages: dmMessages };
 
 type Cmd = { id: string; label: string; group: string; hint?: string; run: () => void };
 
@@ -48,16 +50,33 @@ function PaletteBody({ items, onDone }: { items: Cmd[]; onDone: () => void }) {
   );
 }
 
+function NewMessageBody({ onPick }: { onPick: (dmId: string) => void }) {
+  const [q, setQ] = useState('');
+  const matches = people.filter((p) => !p.bot && p.id !== ME && p.name.toLowerCase().includes(q.toLowerCase()));
+  return (
+    <div className="palette">
+      <Input label="To" data-autofocus placeholder="Search for anyone on the team" value={q} onChange={(e) => setQ(e.target.value)} />
+      <List label="People">
+        {matches.length === 0 && <p className="palette__empty">No one matches that name.</p>}
+        {matches.map((p) => (
+          <ListRow key={p.id} leading={<Avatar name={p.name} size={32} status={p.status} />} title={p.name} description={p.role} onClick={() => onPick(`dm-${p.id}`)} />
+        ))}
+      </List>
+    </div>
+  );
+}
+
 export default function RailConcept() {
-  const ws = useWorkspace('automation');
+  const ws = useWorkspace('automation', dmSeed);
   const wide = useMedia('(min-width: 1200px)');
   const mid = useMedia('(min-width: 900px)');
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const [palette, setPalette] = useState(false);
   const [menu, setMenu] = useState(false);
   const [membersOpen, setMembersOpen] = useState(false);
-  const [workspace, setWorkspace] = useState('northfield');
-  const [joined, setJoined] = useState(false);
+  const [newMsg, setNewMsg] = useState(false);
+  const [favs, setFavs] = useState<Set<string>>(new Set(['lead-hiring', 'automation']));
+  const [call, setCall] = useState<null | 'audio' | 'video'>(null);
   const [cursor, setCursor] = useState(0);
   const composer = useRef<HTMLTextAreaElement>(null);
   const opened = useRef(false);
@@ -70,15 +89,19 @@ export default function RailConcept() {
   useEffect(() => { if (!opened.current && wide) { opened.current = true; openThread('a5'); } }, [wide, openThread]);
   useEffect(() => { feed.current?.querySelector(`[data-idx="${cursor}"]`)?.scrollIntoView({ block: 'nearest' }); }, [cursor, channelId]);
 
+  const toggleFav = (id: string) => setFavs((f) => { const n = new Set(f); if (!n.delete(id)) n.add(id); return n; });
   const cmds: Cmd[] = useMemo(() => [
-    ...channels.map((c) => ({ id: `ch-${c.id}`, label: `Go to #${c.name}`, group: 'Channel', run: () => { selectChannel(c.id); setMenu(false); } })),
+    ...channels.map((c) => ({ id: `ch-${c.id}`, label: c.dm ? `Message ${c.name}` : `Go to #${c.name}`, group: 'Channel', run: () => { selectChannel(c.id); setMenu(false); } })),
+    { id: 'new', label: 'New message', group: 'Command', run: () => setNewMsg(true) },
+    { id: 'fav', label: favs.has(channelId) ? 'Remove from favorites' : 'Add to favorites', group: 'Command', run: () => toggleFav(channelId) },
     { id: 'write', label: 'Write a message', group: 'Command', hint: '/', run: () => setTimeout(() => composer.current?.focus(), 0) },
     { id: 'thread', label: 'Open thread on selected message', group: 'Command', hint: 'T', run: () => messages[cursor] && openThread(messages[cursor].id) },
     { id: 'read', label: 'Mark channel as read', group: 'Command', hint: 'Shift R', run: () => markRead(channelId) },
     { id: 'members', label: 'Show members', group: 'Command', run: () => setMembersOpen(true) },
     { id: 'theme', label: theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme', group: 'Command', hint: 'Shift D', run: () => setTheme((t) => (t === 'dark' ? 'light' : 'dark')) },
-  ], [channels, messages, cursor, channelId, theme, selectChannel, markRead, openThread]);
+  ], [channels, messages, cursor, channelId, theme, favs, selectChannel, markRead, openThread]);
 
+  const order = [...channels.filter((c) => favs.has(c.id)), ...channels.filter((c) => !c.dm && !favs.has(c.id)), ...channels.filter((c) => c.dm && !favs.has(c.id))];
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement;
@@ -86,8 +109,8 @@ export default function RailConcept() {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); setPalette((p) => !p); return; }
       if (e.altKey && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
         e.preventDefault();
-        const i = channels.findIndex((c) => c.id === channelId);
-        const n = channels[(i + (e.key === 'ArrowDown' ? 1 : -1) + channels.length) % channels.length];
+        const i = order.findIndex((c) => c.id === channelId);
+        const n = order[(i + (e.key === 'ArrowDown' ? 1 : -1) + order.length) % order.length];
         selectChannel(n.id);
         return;
       }
@@ -102,31 +125,38 @@ export default function RailConcept() {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [channels, channelId, messages, cursor, selectChannel, openThread, markRead]);
+  }, [order, channelId, messages, cursor, selectChannel, openThread, markRead]);
 
-  const groups = ['Hiring', 'Tools', 'Team'] as const;
-  const wsNames: Record<string, string> = { northfield: 'Northfield Design', hiring: 'Hiring Ops', studio: 'Studio Labs' };
-  const demo = workspace !== 'northfield';
-  const channelNav = groups.map((g) => {
-    const items: NavItem[] = channels.filter((c) => c.group === g).map((c) => ({
-      id: c.id, label: c.name, icon: <Hash size="1.25em" aria-hidden="true" />, badge: c.unread || undefined,
-      badgeLabel: `${c.unread} unread${c.mentions ? `, ${c.mentions} mentions` : ''}`,
-    }));
-    return <Nav key={g} label={`${g} channels`} heading={g} items={items} current={channelId} onSelect={(id) => { selectChannel(id); setMenu(false); }} />;
+  const toItem = (c: (typeof channels)[number]): NavItem => ({
+    id: c.id, label: c.name,
+    icon: c.dm ? <Avatar name={personById(c.dm).name} size={20} status={personById(c.dm).status} /> : <Hash size="1.25em" aria-hidden="true" />,
+    badge: c.unread || undefined,
+    badgeLabel: `${c.unread} unread${c.mentions ? `, ${c.mentions} mentions` : ''}`,
   });
+  const section = (heading: string, list: typeof channels) =>
+    list.length > 0 && <Nav key={heading} label={heading} heading={heading} items={list.map(toItem)} current={channelId} onSelect={(id) => { selectChannel(id); setMenu(false); }} />;
+  const channelNav = [
+    section('Favorites', order.filter((c) => favs.has(c.id))),
+    section('Channels', channels.filter((c) => !c.dm && !favs.has(c.id))),
+    section('Direct messages', channels.filter((c) => c.dm && !favs.has(c.id))),
+  ];
 
   const channelPane = (
     <div className="rail__channels-inner">
       <div className="rail__brand">
         <h2>Northfield <span className="ds-soft">Design</span></h2>
-        <Button variant="secondary" size="sm" icon={<MagnifyingGlass size="1.25em" />} onClick={() => { setMenu(false); setPalette(true); }}>
-          Jump to <kbd>Ctrl K</kbd>
-        </Button>
+        <div className="rail__brand-row">
+          <Button variant="secondary" size="sm" icon={<MagnifyingGlass size="1.25em" />} onClick={() => { setMenu(false); setPalette(true); }}>
+            Jump to <kbd>Ctrl K</kbd>
+          </Button>
+          <Button variant="secondary" size="sm" iconOnly aria-label="New message" icon={<NotePencil size="1.25em" />} onClick={() => { setMenu(false); setNewMsg(true); }} />
+        </div>
       </div>
       <div className="rail__scroll">{channelNav}</div>
       <div className="rail__me">
         <Avatar name={personById('jules').name} size={32} status="online" />
         <div><strong>Jules Mehta</strong><span className="ds-muted">Product designer</span></div>
+        <Button variant="ghost" size="sm" iconOnly aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'} icon={theme === 'dark' ? <Sun size="1.25em" /> : <Moon size="1.25em" />} onClick={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))} />
       </div>
     </div>
   );
@@ -147,46 +177,34 @@ export default function RailConcept() {
   const rightBody = openRoot ? threadView : members;
 
   return (
-    <div className="rail" data-ds-theme={theme} data-wide={wide && !demo} data-mid={mid} data-demo={demo || undefined}>
-      {mid && (
-        <div className="rail__ws">
-          <Nav
-            label="Workspaces" variant="rail" current={workspace} onSelect={setWorkspace}
-            items={[
-              { id: 'northfield', label: 'Northfield Design', icon: <Avatar name="Northfield Design" size={28} shape="square" tint="sky" /> },
-              { id: 'hiring', label: 'Hiring Ops', icon: <Avatar name="Hiring Ops" size={28} shape="square" tint="peach" /> },
-              { id: 'studio', label: 'Studio Labs', icon: <Avatar name="Studio Labs" size={28} shape="square" tint="sage" /> },
-            ]}
-          />
-          <Button variant="ghost" iconOnly aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'} icon={theme === 'dark' ? <Sun size="1.25em" /> : <Moon size="1.25em" />} onClick={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))} />
-        </div>
-      )}
-      {mid && !demo && <aside className="rail__channels" aria-label="Channels">{channelPane}</aside>}
-      {demo && (
-        <main className="rail__empty">
-          <Avatar name={wsNames[workspace]} size={64} shape="square" tint={workspace === 'hiring' ? 'peach' : 'sage'} />
-          <h1>{wsNames[workspace]}</h1>
-          <p className="ds-muted">This workspace is a placeholder in the demo and has no channels. All the content lives in Northfield Design.</p>
-          <Button variant="primary" onClick={() => setWorkspace('northfield')}>Back to Northfield Design</Button>
-        </main>
-      )}
+    <div className="rail" data-ds-theme={theme} data-wide={wide} data-mid={mid}>
+      {mid && <aside className="rail__channels" aria-label="Channels">{channelPane}</aside>}
 
-      {!demo && <main className="rail__main">
+      <main className="rail__main">
         <header className="rail__top">
           {!mid && <Button variant="ghost" iconOnly aria-label="Open channels" icon={<ListIcon size="1.25em" />} onClick={() => setMenu(true)} />}
           <div className="rail__title">
-            <h1><span className="ds-soft">#</span>{channel.name}</h1>
+            <h1>{channel.dm ? channel.name : <><span className="ds-soft">#</span>{channel.name}</>}</h1>
             <p className="ds-muted">{channel.topic}</p>
           </div>
-          <Button variant="ghost" iconOnly aria-label="Show members" aria-pressed={membersOpen && !openRoot} icon={<Users size="1.25em" />} onClick={() => { openThread(null); setMembersOpen((m) => !m); }} />
+          <Button variant="ghost" iconOnly aria-label={favs.has(channelId) ? 'Remove from favorites' : 'Add to favorites'} aria-pressed={favs.has(channelId)} icon={<Star size="1.25em" weight={favs.has(channelId) ? 'fill' : 'regular'} />} onClick={() => toggleFav(channelId)} />
+          {!channel.dm && <Button variant="ghost" iconOnly aria-label="Show members" aria-pressed={membersOpen && !openRoot} icon={<Users size="1.25em" />} onClick={() => { openThread(null); setMembersOpen((m) => !m); }} />}
         </header>
 
-        {channel.live && (
+        {channel.live && !channel.dm && (
           <div className="rail__huddle">
             <SpeakerHigh size="1.25em" aria-hidden="true" />
             <span><strong>{channel.live.title}</strong> <span className="ds-muted">{channel.live.listeners} listening</span></span>
             <span className="rail__stack">{channel.live.speakers.map((s) => <Avatar key={s} name={personById(s).name} size={24} />)}</span>
-            <Button size="sm" variant={joined ? 'secondary' : 'primary'} onClick={() => setJoined((j) => !j)}>{joined ? 'Leave huddle' : 'Join huddle'}</Button>
+            {call ? (
+              <span className="rail__meet"><span>In {call} call</span><Button size="sm" variant="secondary" onClick={() => setCall(null)}>Leave meet</Button></span>
+            ) : (
+              <span className="rail__meet" role="group" aria-label="Join meet">
+                <span className="ds-muted">Join meet</span>
+                <Button size="sm" variant="secondary" icon={<Phone size="1.25em" />} onClick={() => setCall('audio')}>Audio call</Button>
+                <Button size="sm" variant="primary" icon={<VideoCamera size="1.25em" />} onClick={() => setCall('video')}>Video call</Button>
+              </span>
+            )}
           </div>
         )}
 
@@ -204,14 +222,14 @@ export default function RailConcept() {
         </div>
 
         <div className="rail__compose">
-          <Composer label={`Message #${channel.name}`} placeholder={`Message #${channel.name}`} inputRef={composer} onSend={(t, f) => send(t, f)} />
+          <Composer label={channel.dm ? `Message ${channel.name}` : `Message #${channel.name}`} placeholder={channel.dm ? `Message ${channel.name}` : `Message #${channel.name}`} inputRef={composer} onSend={(t, f) => send(t, f)} />
           <p className="rail__keys" aria-label="Keyboard shortcuts">
             <span><kbd>/</kbd> write</span><span><kbd>J</kbd><kbd>K</kbd> move</span><span><kbd>T</kbd> thread</span><span><kbd>Ctrl K</kbd> jump</span><span><kbd>Alt</kbd><kbd>↑</kbd><kbd>↓</kbd> channels</span>
           </p>
         </div>
-      </main>}
+      </main>
 
-      {wide && !demo && (
+      {wide && (
         <aside className="rail__right" aria-label={rightTitle}>
           <div className="rail__right-head">
             <h2>{rightTitle}</h2>
@@ -220,7 +238,7 @@ export default function RailConcept() {
           <div className="rail__right-body">{rightBody}</div>
         </aside>
       )}
-      {!wide && !demo && (
+      {!wide && (
         <Sheet open={!!openRoot || membersOpen} onClose={() => { openThread(null); setMembersOpen(false); }} title={rightTitle} side="right">
           {rightBody}
         </Sheet>
@@ -231,7 +249,10 @@ export default function RailConcept() {
       <Sheet open={palette} onClose={() => setPalette(false)} title="Command menu">
         <PaletteBody items={cmds} onDone={() => setPalette(false)} />
       </Sheet>
-      <p className="ds-sr-only">{joined ? 'You joined the huddle' : ''}</p>
+      <Sheet open={newMsg} onClose={() => setNewMsg(false)} title="New message">
+        <NewMessageBody onPick={(id) => { setNewMsg(false); selectChannel(id); setTimeout(() => composer.current?.focus(), 0); }} />
+      </Sheet>
+      <p className="ds-sr-only" aria-live="polite">{call ? `You joined the ${call} call` : ''}</p>
     </div>
   );
 }
