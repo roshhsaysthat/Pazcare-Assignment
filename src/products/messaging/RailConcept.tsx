@@ -60,11 +60,14 @@ export default function RailConcept() {
   const [joined, setJoined] = useState(false);
   const [cursor, setCursor] = useState(0);
   const composer = useRef<HTMLTextAreaElement>(null);
+  const opened = useRef(false);
   const feed = useRef<HTMLDivElement>(null);
 
   const { channels, channel, channelId, messages, selectChannel, markRead, openRoot, openThread, root, threadFor, send, reply } = ws;
 
   useEffect(() => { setCursor(Math.max(messages.length - 1, 0)); }, [channelId, messages.length]);
+  // Open a real thread on first load at desktop width, so channels, conversation, thread and composer are all visible at once.
+  useEffect(() => { if (!opened.current && wide) { opened.current = true; openThread('a5'); } }, [wide, openThread]);
   useEffect(() => { feed.current?.querySelector(`[data-idx="${cursor}"]`)?.scrollIntoView({ block: 'nearest' }); }, [cursor, channelId]);
 
   const cmds: Cmd[] = useMemo(() => [
@@ -102,6 +105,8 @@ export default function RailConcept() {
   }, [channels, channelId, messages, cursor, selectChannel, openThread, markRead]);
 
   const groups = ['Hiring', 'Tools', 'Team'] as const;
+  const wsNames: Record<string, string> = { northfield: 'Northfield Design', hiring: 'Hiring Ops', studio: 'Studio Labs' };
+  const demo = workspace !== 'northfield';
   const channelNav = groups.map((g) => {
     const items: NavItem[] = channels.filter((c) => c.group === g).map((c) => ({
       id: c.id, label: c.name, icon: <Hash size="1.25em" aria-hidden="true" />, badge: c.unread || undefined,
@@ -142,7 +147,7 @@ export default function RailConcept() {
   const rightBody = openRoot ? threadView : members;
 
   return (
-    <div className="rail" data-ds-theme={theme} data-wide={wide} data-mid={mid}>
+    <div className="rail" data-ds-theme={theme} data-wide={wide && !demo} data-mid={mid} data-demo={demo || undefined}>
       {mid && (
         <div className="rail__ws">
           <Nav
@@ -156,9 +161,17 @@ export default function RailConcept() {
           <Button variant="ghost" iconOnly aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'} icon={theme === 'dark' ? <Sun size="1.25em" /> : <Moon size="1.25em" />} onClick={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))} />
         </div>
       )}
-      {mid && <aside className="rail__channels" aria-label="Channels">{channelPane}</aside>}
+      {mid && !demo && <aside className="rail__channels" aria-label="Channels">{channelPane}</aside>}
+      {demo && (
+        <main className="rail__empty">
+          <Avatar name={wsNames[workspace]} size={64} shape="square" tint={workspace === 'hiring' ? 'peach' : 'sage'} />
+          <h1>{wsNames[workspace]}</h1>
+          <p className="ds-muted">This workspace is a placeholder in the demo and has no channels. All the content lives in Northfield Design.</p>
+          <Button variant="primary" onClick={() => setWorkspace('northfield')}>Back to Northfield Design</Button>
+        </main>
+      )}
 
-      <main className="rail__main">
+      {!demo && <main className="rail__main">
         <header className="rail__top">
           {!mid && <Button variant="ghost" iconOnly aria-label="Open channels" icon={<ListIcon size="1.25em" />} onClick={() => setMenu(true)} />}
           <div className="rail__title">
@@ -196,9 +209,9 @@ export default function RailConcept() {
             <span><kbd>/</kbd> write</span><span><kbd>J</kbd><kbd>K</kbd> move</span><span><kbd>T</kbd> thread</span><span><kbd>Ctrl K</kbd> jump</span><span><kbd>Alt</kbd><kbd>↑</kbd><kbd>↓</kbd> channels</span>
           </p>
         </div>
-      </main>
+      </main>}
 
-      {wide && (
+      {wide && !demo && (
         <aside className="rail__right" aria-label={rightTitle}>
           <div className="rail__right-head">
             <h2>{rightTitle}</h2>
@@ -207,7 +220,7 @@ export default function RailConcept() {
           <div className="rail__right-body">{rightBody}</div>
         </aside>
       )}
-      {!wide && (
+      {!wide && !demo && (
         <Sheet open={!!openRoot || membersOpen} onClose={() => { openThread(null); setMembersOpen(false); }} title={rightTitle} side="right">
           {rightBody}
         </Sheet>

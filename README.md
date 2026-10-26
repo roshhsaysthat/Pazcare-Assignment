@@ -71,11 +71,11 @@ mkdir -p .claude/skills && cp -r skills/roshyoui-design-system .claude/skills/
 
 | Suite | Checks | axe scans | Covers |
 |---|---|---|---|
-| messaging | 24 | 3 | send, @mention picker, command menu, shortcuts, thread open and reply, filters, inbox reply, Done and Undo, huddle, mobile menus |
+| messaging | 31 | 3 | default view shows channels, conversation, thread and composer; send, @mention picker, command menu, shortcuts, thread reply, workspace placeholder, filters, inbox reply, Done and Undo, huddle, mobile menus |
 | reader | 24 | 5 | page logging and validation, finishing a book, empty state, chart and month filter, shelf filters and sort, side sheet edits |
 | booking | 18 | 4 | step gating, focus management, validation, back keeps data, confirmation, mobile summary |
 
-All 66 checks pass and axe reports zero WCAG 2 A/AA violations in the scanned states. Layouts were also checked at 390, 768 and 1280px for horizontal overflow. **Not tested:** screen readers, real touch devices, Safari, Firefox; and axe was run on default and sheet-open states, not every state.
+All 73 checks pass and axe reports zero WCAG 2 A/AA violations in the scanned states. Layouts were also checked at 390, 768 and 1280px for horizontal overflow. **Not tested:** screen readers, real touch devices, Safari, Firefox; and axe was run on default and sheet-open states, not every state.
 
 ## Skill validation
 
@@ -92,7 +92,7 @@ Summary (full report in `docs/validation.md`): the skill carried the system to a
 
 ## Known limitations
 
-- Some UI is mocked: Rail's workspace switcher, Canvas's Files and People tabs, huddle audio. The booking flow stores nothing and says so on screen.
+- Some UI is mocked: Rail's other two workspaces are labelled placeholders, Canvas's Files and People tabs are light, and huddles have no audio. On Rail at widths under 1200px the thread opens in a side sheet instead of being visible by default. The booking flow stores nothing and says so on screen.
 - Message formatting supports bold, code and mentions only.
 - The skill test was not independent (above).
 - Dark theme contrast was scanned in Rail's default view only.

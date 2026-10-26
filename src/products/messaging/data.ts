@@ -94,7 +94,11 @@ export const initialThreads: Thread[] = [
   {
     rootId: 'a5',
     channelId: 'automation',
-    replies: [{ id: 'a5r1', author: 'jules', time: '10:10', body: 'On it. I will post a draft here by end of day.' }],
+    replies: [
+      { id: 'a5r1', author: 'jules', time: '10:10', body: 'On it. I will post a draft here by end of day.' },
+      { id: 'a5r2', author: 'priya', time: '10:14', body: 'Please add a rollback rule. If reviewers disagree with the tool more than one time in ten, we pause.' },
+      { id: 'a5r3', author: 'mira', time: '10:18', body: 'Yes. And name one owner per flow, so a person (not the tool) signs off.', reactions: [{ emoji: '👍', count: 3 }] },
+    ],
   },
   {
     rootId: 'h1',

@@ -19,6 +19,16 @@ with sync_playwright() as p:
         pg.goto(f'{BASE}/#/messaging/{cid}'); pg.wait_for_timeout(400); return pg
     # RAIL
     pg=page('rail')
+    # The required pieces are all visible on first load at desktop width: channels, conversation, a thread, a composer.
+    ok('rail default: channels', pg.get_by_role('complementary',name='Channels').is_visible())
+    ok('rail default: conversation', pg.get_by_role('log',name='Messages in automation-tools').is_visible())
+    ok('rail default: thread open with replies', pg.get_by_role('heading',name='Thread').is_visible() and pg.get_by_text('rollback rule').count()==1)
+    ok('rail default: composer', pg.get_by_label('Message #automation-tools').is_visible())
+    pg.locator('.rail__ws .ds-nav__item').nth(1).click()
+    ok('rail demo workspace states it is a placeholder', pg.get_by_text('placeholder in the demo').count()==1)
+    ok('rail demo workspace marks selection', pg.locator('.rail__ws .ds-nav__item[aria-current=page]').count()==1)
+    pg.get_by_role('button',name='Back to Northfield Design').click()
+    ok('rail back to real workspace', pg.get_by_role('complementary',name='Channels').is_visible())
     pg.get_by_label('Message #automation-tools').fill('Pilot criteria draft is up')
     pg.keyboard.press('Enter')
     ok('rail send', pg.get_by_text('Pilot criteria draft is up').count()==1)
