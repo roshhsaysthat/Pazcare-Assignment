@@ -116,6 +116,16 @@ export const commands = [
   { id: 'toggle-theme', label: 'Toggle dark theme', hint: 'Shift+D' },
 ];
 
+export const profiles: Record<string, { email: string; location: string; hours: string; about: string }> = {
+  jules: { email: 'jules.mehta@northfield.design', location: 'Berlin', hours: '09:00 to 17:30', about: 'Designs the hiring and automation tools the team uses every day.' },
+  mira: { email: 'mira.okafor@northfield.design', location: 'London', hours: '08:30 to 16:30', about: 'Leads the design team and sits on every Design Lead interview panel.' },
+  dev: { email: 'dev.sharma@northfield.design', location: 'Pune', hours: '10:00 to 18:30', about: 'Reviews plugin output and owns the systems question in interviews.' },
+  anika: { email: 'anika.rao@northfield.design', location: 'Dublin', hours: '09:00 to 17:00', about: 'Runs scheduling and candidate communication for design roles.' },
+  tomas: { email: 'tomas.berg@northfield.design', location: 'Amsterdam', hours: '09:00 to 17:00', about: 'Owns tooling budget, rituals and the approved plugin list.' },
+  priya: { email: 'priya.nair@northfield.design', location: 'Lisbon', hours: '09:30 to 17:30', about: 'Senior designer. Reviews portfolios and guards the human sign-off step.' },
+  leo: { email: 'leo.park@northfield.design', location: 'New York', hours: '09:00 to 17:00', about: 'Hiring manager for the Design Lead role. Joins panels remotely.' },
+};
+
 /** Direct messages: one conversation per person, yourself first. Used by Rail. */
 const dmTints: Tint[] = ['sky', 'peach', 'sage', 'lilac', 'butter', 'cream', 'ice'];
 export const dmChannels: Channel[] = people
@@ -123,10 +133,12 @@ export const dmChannels: Channel[] = people
   .sort((a, b) => (a.id === ME ? -1 : b.id === ME ? 1 : 0))
   .map((p, i) => ({
     id: `dm-${p.id}`, name: p.id === ME ? `${p.name} (you)` : p.name, topic: p.role, group: 'Team' as const, tint: dmTints[i % dmTints.length], dm: p.id,
-    unread: p.id === 'mira' || p.id === 'anika' ? 1 : 0,
+    unread: p.id === 'mira' || p.id === 'anika' ? 1 : p.id === 'priya' ? 5 : 0,
   }));
 export const dmMessages: Record<string, Message[]> = {
   'dm-jules': [{ id: 'dm-j1', author: 'jules', time: 'Mon', body: 'Note to self: pilot criteria draft, keep scorecards human.' }],
   'dm-mira': [{ id: 'dm-m1', author: 'mira', time: '09:50', body: 'Can you keep the pilot criteria to one page? Leo will read it on his phone.' }],
+  'dm-priya': [{ id: 'dm-p1', author: 'priya', time: '09:12', body: 'Could you send me the pilot criteria before Friday? I opened the old draft earlier but it was completely out of date.' }],
+  'dm-dev': [{ id: 'dm-d1', author: 'dev', time: 'Mon', body: 'Bake-off is booked for Thursday afternoon. Same frame, three plugins.' }],
   'dm-anika': [{ id: 'dm-a1', author: 'anika', time: '09:35', body: 'Thursday panel is confirmed. Want the portfolio link in the invite?' }],
 };

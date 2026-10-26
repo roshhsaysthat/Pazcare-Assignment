@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Hash, List as ListIcon, MagnifyingGlass, Moon, NotePencil, Phone, SpeakerHigh, Star, Sun, Users, VideoCamera, X } from '@phosphor-icons/react';
 import { Avatar, Button, Input, List, ListRow, Nav, Sheet, type NavItem } from '../../design-system';
+import { PersonAvatar } from './avatars';
 import { Composer } from './Composer';
 import { MessageItem } from './MessageItem';
 import { ThreadPanel } from './ThreadPanel';
-import { dmChannels, dmMessages, people, personById, ME } from './data';
+import { type Channel, type Message, dmChannels, dmMessages, people, personById, profiles, ME } from './data';
 import { useMedia } from './useMedia';
 import { useWorkspace } from './workspace';
 import './rail.css';
@@ -50,6 +51,36 @@ function PaletteBody({ items, onDone }: { items: Cmd[]; onDone: () => void }) {
   );
 }
 
+const dmPreview = (msgs: Message[] | undefined) => {
+  const m = msgs?.at(-1);
+  if (!m) return { text: 'No messages yet', time: '' };
+  return { text: `${m.author === ME ? 'You: ' : ''}${m.body.replace(/\*\*/g, '').replace(/`/g, '')}`, time: m.time };
+};
+
+/** Direct messages with a two-line text preview, time and unread count. */
+function DmList({ dms, messages, current, onSelect }: { dms: Channel[]; messages: Record<string, Message[]>; current: string; onSelect: (id: string) => void }) {
+  if (!dms.length) return null;
+  return (
+    <div className="rail__dm">
+      <div className="ds-nav__heading">Direct messages</div>
+      <List label="Direct messages">
+        {dms.map((c) => {
+          const pv = dmPreview(messages[c.id]);
+          const p = personById(c.dm!);
+          return (
+            <ListRow
+              key={c.id} current={c.id === current} onClick={() => onSelect(c.id)}
+              leading={<PersonAvatar name={p.name} size={40} status={p.status} />}
+              title={c.name} meta={pv.time} description={pv.text}
+              trailing={c.unread ? <span className="ds-nav__badge" aria-label={`${c.unread} unread`}>{c.unread}</span> : undefined}
+            />
+          );
+        })}
+      </List>
+    </div>
+  );
+}
+
 function NewMessageBody({ onPick }: { onPick: (dmId: string) => void }) {
   const [q, setQ] = useState('');
   const matches = people.filter((p) => !p.bot && p.id !== ME && p.name.toLowerCase().includes(q.toLowerCase()));
@@ -59,7 +90,7 @@ function NewMessageBody({ onPick }: { onPick: (dmId: string) => void }) {
       <List label="People">
         {matches.length === 0 && <p className="palette__empty">No one matches that name.</p>}
         {matches.map((p) => (
-          <ListRow key={p.id} leading={<Avatar name={p.name} size={32} status={p.status} />} title={p.name} description={p.role} onClick={() => onPick(`dm-${p.id}`)} />
+          <ListRow key={p.id} leading={<PersonAvatar name={p.name} size={32} status={p.status} />} title={p.name} description={p.role} onClick={() => onPick(`dm-${p.id}`)} />
         ))}
       </List>
     </div>
@@ -75,6 +106,7 @@ export default function RailConcept() {
   const [menu, setMenu] = useState(false);
   const [membersOpen, setMembersOpen] = useState(false);
   const [newMsg, setNewMsg] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
   const [favs, setFavs] = useState<Set<string>>(new Set(['lead-hiring', 'automation']));
   const [call, setCall] = useState<null | 'audio' | 'video'>(null);
   const [cursor, setCursor] = useState(0);
@@ -82,8 +114,9 @@ export default function RailConcept() {
   const opened = useRef(false);
   const feed = useRef<HTMLDivElement>(null);
 
-  const { channels, channel, channelId, messages, selectChannel, markRead, openRoot, openThread, root, threadFor, send, reply } = ws;
+  const { allMessages, channels, channel, channelId, messages, selectChannel, markRead, openRoot, openThread, root, threadFor, send, reply } = ws;
 
+  useEffect(() => { setProfileOpen(false); }, [channelId]);
   useEffect(() => { setCursor(Math.max(messages.length - 1, 0)); }, [channelId, messages.length]);
   // Open a real thread on first load at desktop width, so channels, conversation, thread and composer are all visible at once.
   useEffect(() => { if (!opened.current && wide) { opened.current = true; openThread('a5'); } }, [wide, openThread]);
@@ -119,7 +152,7 @@ export default function RailConcept() {
       else if (e.key === 'j') setCursor((c) => Math.min(c + 1, messages.length - 1));
       else if (e.key === 'k') setCursor((c) => Math.max(c - 1, 0));
       else if (e.key === 't' && messages[cursor]) openThread(messages[cursor].id);
-      else if (e.key === 'Escape') { openThread(null); setMembersOpen(false); }
+      else if (e.key === 'Escape') { openThread(null); setMembersOpen(false); setProfileOpen(false); }
       else if (e.shiftKey && e.key === 'R') markRead(channelId);
       else if (e.shiftKey && e.key === 'D') setTheme((x) => (x === 'dark' ? 'light' : 'dark'));
     };
@@ -129,7 +162,7 @@ export default function RailConcept() {
 
   const toItem = (c: (typeof channels)[number]): NavItem => ({
     id: c.id, label: c.name,
-    icon: c.dm ? <Avatar name={personById(c.dm).name} size={20} status={personById(c.dm).status} /> : <Hash size="1.25em" aria-hidden="true" />,
+    icon: c.dm ? <PersonAvatar name={personById(c.dm).name} size={20} status={personById(c.dm).status} /> : <Hash size="1.25em" aria-hidden="true" />,
     badge: c.unread || undefined,
     badgeLabel: `${c.unread} unread${c.mentions ? `, ${c.mentions} mentions` : ''}`,
   });
@@ -138,7 +171,7 @@ export default function RailConcept() {
   const channelNav = [
     section('Favorites', order.filter((c) => favs.has(c.id))),
     section('Channels', channels.filter((c) => !c.dm && !favs.has(c.id))),
-    section('Direct messages', channels.filter((c) => c.dm && !favs.has(c.id))),
+    <DmList key="dm" dms={channels.filter((c) => c.dm && !favs.has(c.id))} messages={allMessages} current={channelId} onSelect={(id) => { selectChannel(id); setMenu(false); }} />,
   ];
 
   const channelPane = (
@@ -154,17 +187,32 @@ export default function RailConcept() {
       </div>
       <div className="rail__scroll">{channelNav}</div>
       <div className="rail__me">
-        <Avatar name={personById('jules').name} size={32} status="online" />
+        <PersonAvatar name={personById('jules').name} size={32} status="online" />
         <div><strong>Jules Mehta</strong><span className="ds-muted">Product designer</span></div>
         <Button variant="ghost" size="sm" iconOnly aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'} icon={theme === 'dark' ? <Sun size="1.25em" /> : <Moon size="1.25em" />} onClick={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))} />
       </div>
     </div>
   );
 
+  const person = channel.dm ? personById(channel.dm) : null;
+  const profile = person && (
+    <div className="rail__profile">
+      <PersonAvatar name={person.name} size={96} status={person.status} />
+      <h3>{person.name}</h3>
+      <p className="ds-muted">{person.role}, <span className="rail__status">{person.status}</span></p>
+      <dl>
+        <div><dt>About</dt><dd>{profiles[person.id].about}</dd></div>
+        <div><dt>Email</dt><dd>{profiles[person.id].email}</dd></div>
+        <div><dt>Location</dt><dd>{profiles[person.id].location}</dd></div>
+        <div><dt>Working hours</dt><dd>{profiles[person.id].hours}</dd></div>
+      </dl>
+    </div>
+  );
+
   const members = (
     <List label="Members">
       {people.filter((p) => !p.bot).map((p) => (
-        <ListRow key={p.id} leading={<Avatar name={p.name} size={32} status={p.status} />} title={p.name} description={p.role} />
+        <ListRow key={p.id} leading={<PersonAvatar name={p.name} size={32} status={p.status} />} title={p.name} description={p.role} />
       ))}
     </List>
   );
@@ -173,8 +221,8 @@ export default function RailConcept() {
     <ThreadPanel root={root} replies={threadFor(root.id)?.replies ?? []} onReply={(t, f) => reply(root.id, t, f)} />
   ) : null;
 
-  const rightTitle = openRoot ? 'Thread' : 'Members';
-  const rightBody = openRoot ? threadView : members;
+  const rightTitle = openRoot ? 'Thread' : person ? 'Profile' : 'Members';
+  const rightBody = openRoot ? threadView : person ? profile : members;
 
   return (
     <div className="rail" data-ds-theme={theme} data-wide={wide} data-mid={mid}>
@@ -184,8 +232,19 @@ export default function RailConcept() {
         <header className="rail__top">
           {!mid && <Button variant="ghost" iconOnly aria-label="Open channels" icon={<ListIcon size="1.25em" />} onClick={() => setMenu(true)} />}
           <div className="rail__title">
-            <h1>{channel.dm ? channel.name : <><span className="ds-soft">#</span>{channel.name}</>}</h1>
-            <p className="ds-muted">{channel.topic}</p>
+            {person ? (
+              <h1>
+                <button type="button" className="rail__who" aria-pressed={profileOpen || !openRoot} onClick={() => { openThread(null); setProfileOpen(true); }}>
+                  <PersonAvatar name={person.name} size={40} status={person.status} />
+                  <span><span className="rail__who-name">{channel.name}</span><span className="rail__who-role">{person.role}</span></span>
+                </button>
+              </h1>
+            ) : (
+              <>
+                <h1><span className="ds-soft">#</span>{channel.name}</h1>
+                <p className="ds-muted">{channel.topic}</p>
+              </>
+            )}
           </div>
           <Button variant="ghost" iconOnly aria-label={favs.has(channelId) ? 'Remove from favorites' : 'Add to favorites'} aria-pressed={favs.has(channelId)} icon={<Star size="1.25em" weight={favs.has(channelId) ? 'fill' : 'regular'} />} onClick={() => toggleFav(channelId)} />
           {!channel.dm && <Button variant="ghost" iconOnly aria-label="Show members" aria-pressed={membersOpen && !openRoot} icon={<Users size="1.25em" />} onClick={() => { openThread(null); setMembersOpen((m) => !m); }} />}
@@ -195,7 +254,7 @@ export default function RailConcept() {
           <div className="rail__huddle">
             <SpeakerHigh size="1.25em" aria-hidden="true" />
             <span><strong>{channel.live.title}</strong> <span className="ds-muted">{channel.live.listeners} listening</span></span>
-            <span className="rail__stack">{channel.live.speakers.map((s) => <Avatar key={s} name={personById(s).name} size={24} />)}</span>
+            <span className="rail__stack">{channel.live.speakers.map((s) => <PersonAvatar key={s} name={personById(s).name} size={24} />)}</span>
             {call ? (
               <span className="rail__meet"><span>In {call} call</span><Button size="sm" variant="secondary" onClick={() => setCall(null)}>Leave meet</Button></span>
             ) : (
@@ -239,7 +298,7 @@ export default function RailConcept() {
         </aside>
       )}
       {!wide && (
-        <Sheet open={!!openRoot || membersOpen} onClose={() => { openThread(null); setMembersOpen(false); }} title={rightTitle} side="right">
+        <Sheet open={!!openRoot || membersOpen || profileOpen} onClose={() => { openThread(null); setMembersOpen(false); setProfileOpen(false); }} title={rightTitle} side="right">
           {rightBody}
         </Sheet>
       )}

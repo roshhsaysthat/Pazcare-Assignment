@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { ArrowBendUpLeft, ArrowLeft, Check, HandWaving, Hash, Microphone, MicrophoneSlash } from '@phosphor-icons/react';
 import { Avatar, Banner, Button, Card, FilterTag, List, ListRow, Sheet, Tag, tintVar } from '../../design-system';
+import { PersonAvatar } from './avatars';
 import { Composer } from './Composer';
 import { MessageItem } from './MessageItem';
 import { ThreadPanel } from './ThreadPanel';
@@ -79,7 +80,7 @@ export default function RoomsConcept() {
                     <Card variant="tint" tint={c.tint} size="lg" className="rooms__live-card">
                       <span className="rooms__live-meta">#{c.name}</span>
                       <strong className="rooms__live-title">{l.title}</strong>
-                      <span className="rooms__stack">{l.speakers.map((s) => <Avatar key={s} name={personById(s).name} size={32} />)}<span>{l.listeners} listening</span></span>
+                      <span className="rooms__stack">{l.speakers.map((s) => <PersonAvatar key={s} name={personById(s).name} size={32} />)}<span>{l.listeners} listening</span></span>
                       <Button variant="primary" size="sm" onClick={() => { openRoom(c); }}>Open room</Button>
                     </Card>
                   </li>
@@ -121,7 +122,7 @@ export default function RoomsConcept() {
                           {it.kind === 'mention' ? <Tag tone="signal" dot>Mentions you</Tag> : <Tag>{it.channel.unread} unread</Tag>}
                           <time className="ds-muted">{it.msg.time}</time>
                         </span>
-                        <span className="rooms__preview"><Avatar name={p.name} size={20} shape={p.bot ? 'square' : 'circle'} /> <span><strong>{p.name.split(' ')[0]}:</strong> {it.msg.body.replace(/\*\*/g, '').replace(/`/g, '')}</span></span>
+                        <span className="rooms__preview"><PersonAvatar name={p.name} size={20} shape={p.bot ? 'square' : 'circle'} /> <span><strong>{p.name.split(' ')[0]}:</strong> {it.msg.body.replace(/\*\*/g, '').replace(/`/g, '')}</span></span>
                       </span>
                     </button>
                     <div className="rooms__item-actions">
@@ -184,11 +185,11 @@ export default function RoomsConcept() {
               <ul className="rooms__speakers" aria-label="Speakers">
                 {live.speakers.map((s, i) => (
                   <li key={s} data-speaking={i === 0 && isJoined && muted ? 'true' : undefined}>
-                    <span className="rooms__ring"><Avatar name={personById(s).name} size={64} /></span>
+                    <span className="rooms__ring"><PersonAvatar name={personById(s).name} size={64} /></span>
                     <span>{personById(s).name.split(' ')[0]}</span>
                   </li>
                 ))}
-                {isJoined && <li><span className="rooms__ring"><Avatar name={me.name} size={64} /></span><span>You</span></li>}
+                {isJoined && <li><span className="rooms__ring"><PersonAvatar name={me.name} size={64} /></span><span>You</span></li>}
               </ul>
               <div className="rooms__controls">
                 {isJoined ? (

@@ -26,7 +26,6 @@ export default function App() {
         {product.concepts.length > 1 && (
           <Nav label="Concepts" variant="pill" current={concept} onSelect={(c) => go(product.id, c)} items={product.concepts.map((c) => ({ id: c.id, label: c.name, icon: <span className="shell__letter" aria-hidden="true">{c.letter}</span> }))} />
         )}
-        <p className="shell__idea"><strong>{current.reference}</strong> {current.idea}</p>
         {current.preferred && <Tag tone="success" dot>Preferred</Tag>}
         <Button variant="secondary" size="sm" icon={<Info size="1.25em" />} onClick={() => setInfo(true)}>Compare</Button>
       </header>

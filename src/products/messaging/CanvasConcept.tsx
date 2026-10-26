@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { CaretDown, ChatsCircle, Hash, List as ListIcon, Paperclip, Users, ArrowsOutSimple } from '@phosphor-icons/react';
 import { Avatar, Button, Card, FilterTag, Input, List, ListRow, Nav, Sheet, tintVar, type NavItem } from '../../design-system';
+import { PersonAvatar } from './avatars';
 import { Composer } from './Composer';
 import { MessageItem } from './MessageItem';
 import { ThreadPanel } from './ThreadPanel';
@@ -156,7 +157,7 @@ export default function CanvasConcept() {
           <Card size="lg" className="canvas__panel">
             <h2>People</h2>
             <List label="People">
-              {people.filter((p) => !p.bot).map((p) => <ListRow key={p.id} leading={<Avatar name={p.name} size={36} status={p.status} />} title={p.name} description={p.role} />)}
+              {people.filter((p) => !p.bot).map((p) => <ListRow key={p.id} leading={<PersonAvatar name={p.name} size={36} status={p.status} />} title={p.name} description={p.role} />)}
             </List>
           </Card>
         )}

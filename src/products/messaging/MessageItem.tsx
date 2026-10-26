@@ -1,5 +1,6 @@
 import { ChatCircleText, Paperclip } from '@phosphor-icons/react';
 import { Avatar, Card, Meter, Tag } from '../../design-system';
+import { PersonAvatar } from './avatars';
 import { personById, type Message } from './data';
 import { rich } from './rich';
 
@@ -19,7 +20,7 @@ export function MessageItem({ msg, replyCount = 0, lastReply, onOpenThread, avat
   return (
     <article className={`msg${grouped ? ' msg--grouped' : ''}`} aria-label={`${p.name} at ${msg.time}`} style={{ ['--msg-avatar' as string]: `${avatarSize}px` }}>
       <div className="msg__avatar">
-        {grouped ? <span className="ds-sr-only">{p.name}</span> : <Avatar name={p.name} size={avatarSize} shape={p.bot ? 'square' : 'circle'} status={p.bot ? undefined : p.status} />}
+        {grouped ? <span className="ds-sr-only">{p.name}</span> : <PersonAvatar name={p.name} size={avatarSize} shape={p.bot ? 'square' : 'circle'} status={p.bot ? undefined : p.status} />}
       </div>
       <div className="msg__main">
         {!grouped && (

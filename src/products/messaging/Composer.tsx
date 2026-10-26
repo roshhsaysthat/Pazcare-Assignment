@@ -1,6 +1,7 @@
 import { useId, useRef, useState, type KeyboardEvent, type RefObject } from 'react';
 import { At, Paperclip, PaperPlaneTilt, TextB, Code, X } from '@phosphor-icons/react';
 import { Avatar, Button } from '../../design-system';
+import { PersonAvatar } from './avatars';
 import { people } from './data';
 
 type Props = {
@@ -119,7 +120,7 @@ export function Composer({ label, placeholder, onSend, variant = 'dock', inputRe
       <ul id={listId} role="listbox" aria-label="People to mention" className="composer__mentions" hidden={!open}>
         {matches.map((p, i) => (
           <li key={p.id} id={`${listId}-${i}`} role="option" aria-selected={i === active} className="composer__option" onMouseDown={(e) => { e.preventDefault(); pick(p.name); }}>
-            <Avatar name={p.name} size={24} /> <span>{p.name}</span> <span className="ds-muted">{p.role}</span>
+            <PersonAvatar name={p.name} size={24} /> <span>{p.name}</span> <span className="ds-muted">{p.role}</span>
           </li>
         ))}
       </ul>
