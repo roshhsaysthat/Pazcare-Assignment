@@ -1,6 +1,6 @@
 import { useId } from 'react';
 import { Star } from '@phosphor-icons/react';
-import { tintVar } from '../../design-system';
+import { tintVar } from '../../../design-system';
 import type { Book } from './data';
 
 /** Generated cover: original typography on a tint. No real cover art is used. */

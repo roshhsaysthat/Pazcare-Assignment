@@ -1,6 +1,6 @@
 # Components and how gaps were handled
 
-Import everything from `src/design-system`. Ten shared components, tokens only, no raw hex in product CSS.
+Import everything from `design-system`. Ten shared components, tokens only, no raw hex in product CSS.
 
 | Component | Variants | Behaviour that matters |
 |---|---|---|
@@ -32,6 +32,6 @@ Ladder: 1 compose existing components, 2 style a native element, 3 build a produ
 | Rating input | Native radio group with star icons, inputs visually hidden | 2 to 3 | Arrow keys and screen readers work for free. |
 | Book cover | Generated typographic cover on a tint (`Cover`) | 3 | No real cover art. Product noun, so it stays out of the system. |
 | Chart | Hand-built SVG measured to container, with a hidden data table | 3 | One chart did not justify a chart library. Colours are ink and grey only. |
-| Dark theme | Inferred palette in `tokens.css` under `[data-theme='dark']` | n/a | The portfolio has none. Needs a design decision. |
+| Dark theme | Inferred palette in `tokens.css` under `[data-ds-theme='dark']` | n/a | The portfolio has none. Needs a design decision. |
 
 Promotion candidates once a second product needs them: the composer's attachment chips, the avatar stack, and the stat strip.

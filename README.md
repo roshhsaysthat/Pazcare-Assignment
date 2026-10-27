@@ -2,6 +2,15 @@
 
 A reusable design system and Claude Code skill extracted from a UX portfolio, applied to two products it had never seen (a team messaging app and a Goodreads-style reader profile), plus a third unfamiliar brief to test the skill. Built with React, TypeScript and Vite, using Claude Code.
 
+## Hand-in map
+
+| Assignment part | Where |
+|---|---|
+| 1. Design system: tokens and React components | `design-system/` (start at its `README.md`), docs in `docs/` |
+| 2. Claude Code skill | `skills/roshyoui-design-system/` (`SKILL.md`, `references/`, `README.md`) |
+| 3. Six runnable layouts, each with a one-line idea | `products/README.md` (code in `src/products/`) |
+| Validation on an unfamiliar brief | `docs/validation.md` (product in `experiments/clinic-booking/`) |
+
 ## Run it
 
 ```bash
@@ -37,7 +46,7 @@ Needs Node 18+. No backend: all state is local React state and resets on reload.
 ## Structure
 
 ```
-src/design-system/        tokens.css, components.css, 10 components (Button, Input, Card, Tag, Nav, List, Sheet, Avatar, Banner, Meter)
+design-system/            tokens.css, components.css, 10 components (Button, Input, Card, Tag, Nav, List, Sheet, Avatar, Banner, Meter)
 products/                  index of the six layouts, each with its one-line idea (code is in src/products/)
 src/products/messaging/   Meetify, Canvas, Rooms + shared composer, message, thread, workspace state
 src/products/reader/      Now, Year, Shelves + shared data, derived stats, cover and rating components, Explore sheet
@@ -50,7 +59,7 @@ tests/                    e2e/*.py and run.sh
 
 ## Design system
 
-Tokens (colour, type scale, spacing, radius, elevation, motion) live in `src/design-system/tokens.css`. Documentation:
+Tokens (colour, type scale, spacing, radius, elevation, motion) live in `design-system/tokens.css`. Documentation:
 
 - `docs/principles.md`: the visual identity, responsive rules and accessibility rules.
 - `docs/components.md`: each component's behaviour, and the decision taken for every gap the portfolio does not define.

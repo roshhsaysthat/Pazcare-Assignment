@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { CaretLeft, CheckCircle } from '@phosphor-icons/react';
-import { Button, Card, FilterTag, Input, Meter, Textarea, tintVar } from '../../design-system';
+import { Button, Card, FilterTag, Input, Meter, Textarea, tintVar } from '../../../design-system';
 import { clinicians, nextDays, services, slotsFor } from './data';
 import './booking.css';
 

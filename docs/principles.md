@@ -1,6 +1,6 @@
 # Visual principles, responsive and accessibility rules
 
-Source of truth for values is `src/design-system/tokens.css`. Provenance of each value is in `provenance.md`.
+Source of truth for values is `design-system/tokens.css`. Provenance of each value is in `provenance.md`.
 
 ## Identity: what must hold in every product
 

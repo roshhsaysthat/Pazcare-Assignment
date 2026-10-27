@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Check, Link as LinkIcon } from '@phosphor-icons/react';
-import { Button } from '../../design-system';
+import { Button } from '../../../design-system';
 
 // The team is fictional, so these links are examples of the shape a real product would share.
 const BASE = 'https://northfield.design';

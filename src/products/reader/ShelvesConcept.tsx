@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { MagnifyingGlass } from '@phosphor-icons/react';
-import { Avatar, Button, FilterTag, Meter, Sheet, Tag, Textarea } from '../../design-system';
+import { Avatar, Button, FilterTag, Meter, Sheet, Tag, Textarea } from '../../../design-system';
 import { fmtDate, useLibrary } from './library';
 import { reader, SHELF_LABEL, SHELVES, type Book, type Shelf } from './data';
 import { Cover, RatingInput, Stars } from './shared';

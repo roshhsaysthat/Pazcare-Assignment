@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { BookOpen, Plus } from '@phosphor-icons/react';
-import { Avatar, Banner, Button, Card, Input, List, ListRow, Meter, Sheet, Tag } from '../../design-system';
+import { Avatar, Banner, Button, Card, Input, List, ListRow, Meter, Sheet, Tag } from '../../../design-system';
 import { byShelf, fmtDate, useLibrary } from './library';
 import { reader, SHELVES, SHELF_LABEL, type Book, type Shelf } from './data';
 import { Cover, Stars } from './shared';

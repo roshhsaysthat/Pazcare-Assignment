@@ -1,4 +1,4 @@
-import type { Tint } from '../../design-system';
+import type { Tint } from '../../../design-system';
 
 export type Service = { id: string; name: string; minutes: number; blurb: string; tint: Tint };
 export type Clinician = { id: string; name: string; focus: string };

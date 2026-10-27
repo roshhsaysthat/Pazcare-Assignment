@@ -1,6 +1,6 @@
 import { useId, useRef, useState, type KeyboardEvent, type RefObject } from 'react';
 import { At, Paperclip, PaperPlaneTilt, TextB, Code, X } from '@phosphor-icons/react';
-import { Avatar, Button } from '../../design-system';
+import { Avatar, Button } from '../../../design-system';
 import { PersonAvatar } from './avatars';
 import { people } from './data';
 

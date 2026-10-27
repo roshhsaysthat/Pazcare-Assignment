@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Info } from '@phosphor-icons/react';
-import { Button, Nav, Sheet, Tag } from './design-system';
+import { Button, Nav, Sheet, Tag } from '../design-system';
 import { parseHash, products } from './products/registry';
 import './products/messaging/messaging.css';
 import './shell.css';

@@ -1,5 +1,5 @@
 import { ChatCircleText, Paperclip } from '@phosphor-icons/react';
-import { Card, Meter, Tag, tintVar, type Tint } from '../../design-system';
+import { Card, Meter, Tag, tintVar, type Tint } from '../../../design-system';
 import { PersonAvatar } from './avatars';
 import { personById, type Message } from './data';
 import { rich } from './rich';

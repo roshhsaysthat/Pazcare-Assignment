@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Hash, List as ListIcon, MagnifyingGlass, Moon, NotePencil, Phone, SpeakerHigh, Star, Sun, Users, VideoCamera, X } from '@phosphor-icons/react';
-import { Avatar, Button, Input, List, ListRow, Nav, Sheet, tintVar, type NavItem } from '../../design-system';
+import { Avatar, Button, Input, List, ListRow, Nav, Sheet, tintVar, type NavItem } from '../../../design-system';
 import { PersonAvatar, bubbleTint } from './avatars';
 import { Composer } from './Composer';
 import { CopyLink, channelLink } from './CopyLink';

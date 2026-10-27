@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { ArrowBendUpLeft, CaretDown, ChatsCircle, Hash, List as ListIcon, MagnifyingGlass, Paperclip, Users, ArrowsOutSimple, X } from '@phosphor-icons/react';
-import { Avatar, Button, Card, FilterTag, Input, List, ListRow, Nav, Sheet, tintVar, type NavItem } from '../../design-system';
+import { Avatar, Button, Card, FilterTag, Input, List, ListRow, Nav, Sheet, tintVar, type NavItem } from '../../../design-system';
 import { PersonAvatar, bubbleTint } from './avatars';
 import { Composer } from './Composer';
 import { CopyLink, channelLink } from './CopyLink';

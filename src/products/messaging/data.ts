@@ -1,4 +1,4 @@
-import type { Status, Tint } from '../../design-system';
+import type { Status, Tint } from '../../../design-system';
 
 export type Person = { id: string; name: string; role: string; status: Status; bot?: boolean };
 export type Channel = {

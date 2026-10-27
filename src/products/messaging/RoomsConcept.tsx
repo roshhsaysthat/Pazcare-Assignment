@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { ArrowBendUpLeft, ArrowLeft, Check, HandWaving, Hash, Microphone, MicrophoneSlash } from '@phosphor-icons/react';
-import { Avatar, Banner, Button, Card, FilterTag, List, ListRow, Sheet, Tag, tintVar } from '../../design-system';
+import { Avatar, Banner, Button, Card, FilterTag, List, ListRow, Sheet, Tag, tintVar } from '../../../design-system';
 import { PersonAvatar } from './avatars';
 import { Composer } from './Composer';
 import { CopyLink, channelLink, inviteLink } from './CopyLink';

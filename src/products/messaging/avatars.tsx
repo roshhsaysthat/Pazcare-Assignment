@@ -1,5 +1,5 @@
 import type { ComponentProps } from 'react';
-import { Avatar, type Tint } from '../../design-system';
+import { Avatar, type Tint } from '../../../design-system';
 import { ME } from './data';
 
 /**

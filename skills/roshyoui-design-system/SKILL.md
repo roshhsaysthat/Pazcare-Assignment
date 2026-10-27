@@ -8,8 +8,8 @@ description: Design or build product UI (apps, dashboards, profiles, forms, tool
 Apply an existing visual identity to products it has never seen. The identity is the **tokens, type, shapes and tone**. It is NOT the portfolio's single-column layout: never force a product into that layout.
 
 Where things live in this repo:
-- Tokens: `src/design-system/tokens.css` (single source of truth, never copy hex into product code)
-- Components: `src/design-system/index.ts` (Button, Input and Textarea, Card, Tag and FilterTag, Nav, List and ListRow, Sheet, Avatar, Banner, Meter)
+- Tokens: `design-system/tokens.css` (single source of truth, never copy hex into product code)
+- Components: `design-system/index.ts` (Button, Input and Textarea, Card, Tag and FilterTag, Nav, List and ListRow, Sheet, Avatar, Banner, Meter)
 - Worked examples: `src/products/messaging/*`, `src/products/reader/*`
 - Provenance of every value: `docs/provenance.md`
 
@@ -22,7 +22,7 @@ Who uses it and when. The 3 things they do most. Density: calm reading or rapid 
 Read `references/structure-by-job.md`. In short: triage, use master-detail panes; read, use one editorial column; monitor numbers, use a stat strip, one chart and a list; browse, use a visual grid with filter chips and a detail sheet; complete a task, use a one-column stepwise flow.
 
 ### 3. Build from existing pieces
-- Import from `src/design-system`. Do not re-implement Button, Input, Card, Tag, Nav, List, Sheet, Avatar, Banner or Meter.
+- Import from `design-system` (repo root). Do not re-implement Button, Input, Card, Tag, Nav, List, Sheet, Avatar, Banner or Meter.
 - Use CSS variables only (`var(--ds-...)`). No raw hex in product CSS.
 - Headings are weight 500 with `--ds-tracking-display`. One two-tone page title per view: `<h1><span class="ds-soft">Grey lead-in,</span> black payoff.</h1>`.
 - Pills for actions and labels. Radii 8, 12, 16, 24. Separate with space and hairlines first, cards second, shadows last.

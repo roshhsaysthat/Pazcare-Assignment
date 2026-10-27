@@ -1,4 +1,4 @@
-import type { Tint } from '../../design-system';
+import type { Tint } from '../../../design-system';
 
 export type Shelf = 'reading' | 'read' | 'want' | 'dnf';
 export type Book = {

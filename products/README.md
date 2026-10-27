@@ -26,5 +26,5 @@ Preferred layouts are marked. Full reasoning for each is in the app's **Compare*
 
 ## Shared, and parked
 
-- Design system used by all six: `src/design-system/`.
+- Design system used by all six: `design-system/`.
 - Parked skill-test product (clinic booking flow): `experiments/clinic-booking/`.

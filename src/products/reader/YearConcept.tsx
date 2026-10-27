@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Avatar, Button, Card, FilterTag, List, ListRow, Meter, Tag } from '../../design-system';
+import { Avatar, Button, Card, FilterTag, List, ListRow, Meter, Tag } from '../../../design-system';
 import { byShelf, fmtDate, useLibrary } from './library';
 import { MONTHS, reader, SHELVES, SHELF_LABEL } from './data';
 import { Cover, Stars } from './shared';
